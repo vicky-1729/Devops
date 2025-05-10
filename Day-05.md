@@ -90,7 +90,7 @@ chown vs:vs /home/vs/.ssh/authorized_keys
 #### Test Login:
 
 ```bash
-ssh -i <private_key_file> vs@<IP_ADDRESS>
+ssh -i <private_key_file> <ec2-user>@<IP_ADDRESS>
 ```
 
 ---
