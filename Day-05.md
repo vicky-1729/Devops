@@ -1,5 +1,5 @@
 ## DAY-05 - 
- ` Linux Permissions, Ownership, Package & Service Management `
+ ## Linux Permissions, Ownership, Package & Service Management 
 
 ---
 
