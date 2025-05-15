@@ -1,148 +1,149 @@
-## ⚙️ Process Management
 
-- **Purpose**: Used to monitor and manage processes on the system.
-- **Run as root or sudo user** to manage processes.
+## DAY-06
 
-### Process Workflow Example:
+### Process Management & Network Management & 3-Tier Architecture
 
-In a software team, the workflow might look like this:
-- Team_Manager → Team_Lead → Senior_Member → Junior → Trainee
+---
 
-In Linux, when you run a command, several processes happen in the background:
-1. **Process Creation** (e.g., `ls -ls`)
-2. **Assign Processor ID (PID)**
-3. **Execute commands in kernel**
-4. **Get Output**
-5. **Show on Display**
+### Process Management
 
-### Commands to Manage Processes
+---
 
-#### `ps`
-- Lists the processes currently running on the system.
-  
-```bash
-ps -ef
-```
+* Process means a running program in Linux.
+* To see processes, usually you need **sudo** or **root** access.
+* Like in a software team:
+  Team\_Manager → Team\_Lead → Senior\_Member → Junior → Trainee
+* In Linux, when you run a command like `ls -ls`, this happens:
 
-Output example:
+Process is created  
+↓  
+Processor assigns a **Process ID (PID)**  
+↓  
+Command runs inside the **kernel**  
+↓  
+Output is generated  
+↓  
+Output is shown on your screen  
 
-```text
-UID        PID  PPID  C STIME TTY       TIME        CMD
-root        1     0    0 2023   ?        00:00:05 /sbin/init
-user        1105  1    0 2023   ?        00:00:10 /usr/bin/python3
-user        1234  1105 0 2023   pts/0     00:00:00 /bin/bash
-```
 
-Where:
-- **PID** = Process ID
-- **PPID** = Parent Process ID (ID of the process that started this one)
 
-#### Check if a process is running:
+---
+
+#### Useful Commands
+
+| Command                 | Description                           | Example/Note                           |               |
+| ----------------------- | ------------------------------------- | -------------------------------------- | ------------- |
+| `ps`                    | List currently running processes      | `ps`                                   |               |
+| `ps -ef`                | List all processes in detail          | Shows columns like UID, PID, PPID, CMD |               |
+| `ps -ef \| grep <name>` | Search for a specific process by name | \`ps -ef                               | grep python\` |
+
+* **PID** = Process ID
+* **PPID** = Parent Process ID (which started this process)
+
+---
+
+#### Check if Process is Running
 
 ```bash
 ps -ef | grep <process-name>
 ```
 
-#### Process Types:
+---
 
-1. **Foreground Process**:
-   - If you run this, you cannot do anything else until it finishes.
-   
-2. **Background Process**:
-   - Runs in the background. You can continue working with other commands.
+#### Foreground vs Background Process
 
-To run a command in the background, use `&`:
+| Type               | Description                         | Example      |
+| ------------------ | ----------------------------------- | ------------ |
+| Foreground Process | Runs and blocks terminal until done | `sleep 10`   |
+| Background Process | Runs in background, terminal free   | `sleep 10 &` |
 
-```bash
-sleep 10
-sleep 10 &
-```
+---
 
-#### Kill a Process:
+#### Kill Processes
 
-- To request termination:
-  
-  ```bash
-  kill <PID>
-  ```
+| Command       | Description                    | Output               |
+| ------------- | ------------------------------ | -------------------- |
+| `kill PID`    | Request process to terminate   | Shows **Terminated** |
+| `kill -9 PID` | Force kill process immediately | Shows **Killed**     |
 
-- To forcefully terminate:
+---
 
-  ```bash
-  kill -9 <PID>
-  ```
-
-#### `top` Command:
-
-- Use to check CPU and memory usage by processes:
+#### Monitor Specific Process
 
 ```bash
 top -p <PID>
 ```
 
+* Shows resource usage (CPU, memory) of the specific process
+
 ---
 
-## 🌐 Network Management
+### Network Management
 
-### Check Open Ports
+---
 
-- To see which ports are open on your system:
+* To check **open ports** on Linux:
 
 ```bash
 netstat -lntp
 ```
 
-Where:
-- `l` = List open ports
-- `n` = Show port numbers
-- `t` = Show TCP connections
-- `p` = Show the process using the port
+* Flags explained:
 
-### DNS Lookup
-
-- To find the IP address of a domain:
-
-```bash
-nslookup <website-url>
-```
-
-Example:
-
-```bash
-Server: 172.31.0.2
-Address: 172.31.0.2#53
-```
-
-### Troubleshooting Commands
-
-To troubleshoot any application, you can use these basic commands:
-
-1. **Check the service status**:
-
-```bash
-systemctl status <service-name>
-```
-
-2. **List running processes**:
-
-```bash
-ps -ef | grep <service-name>
-```
-
-3. **Check open ports**:
-
-```bash
-netstat -lntp
-```
-
-4. **Check resource usage by PID**:
-
-```bash
-top -p <PID>
-```
+  * `l` = list listening ports
+  * `n` = show port numbers numerically
+  * `t` = show TCP ports
+  * `p` = show process using the port
 
 ---
 
-## 🏛️ 3-Tier Architecture
+### DNS & Connectivity Tools
+| Command                      | Purpose                            | Example                         |
+|------------------------------|----------------------------------|---------------------------------|
+| `nslookup <website-url>`     | Get IP or DNS records for a domain | `nslookup google.com`           |
+| `systemctl status <service>` | Check status of a Linux service  | `systemctl status sshd`         |
+| `netstat -lntp`              | Check open ports                 | `netstat -lntp`                 |
+| `top -p <PID>`               | Check resource usage by process  | `top -p 1234`                   |
+| `telnet <ip> <port>`         | Test connectivity to IP and port | `telnet 192.168.1.10 80`        |
+| `telnet <dns> <port>`        | Test connectivity to DNS and port| `telnet google.com 80`          |
+| `ps -ef \| grep <service>`   | Check if service process is running | `ps -ef \| grep sshd`           |
 
-(You can add specific details about 3-Tier architecture here, if required)
+---
+
+### 3-Tier Architecture
+
+---
+
+The 3-tier architecture divides a web application into three separate layers, each with a clear role to improve scalability, maintainability, and security.
+
+### 1. Presentation Layer (Frontend)
+
+- This is the user interface layer where users interact with the application, such as through web browsers or mobile apps.
+- It handles displaying data and capturing user inputs.
+- Communicates with the backend using APIs to send/receive data.
+
+### 2. Application Layer (Backend)
+
+- Contains the core business logic of the application.
+- Processes requests from the frontend and applies business rules.
+- Manages workflows, authentication, authorization, and error handling.
+- Interacts with the database layer to fetch or store data.
+
+### 3. Database Layer
+
+- Responsible for persistent data storage.
+- Typically uses relational databases (e.g., MySQL, PostgreSQL) or NoSQL databases.
+- Accessed only through the backend layer to ensure security and data integrity.
+
+---
+
+### Why Use 3-Tier Architecture?
+
+- It keeps things clean by splitting the app into parts that do different jobs.
+- Different teams can work on each part without getting in each other’s way.
+- The database is safe because only the backend can talk to it.
+- You can make each part bigger or smaller depending on how many people use the app.
+
+* Each layer is separate for scalability, security, and easy maintenance
+<img width="879" alt="Screenshot 2025-05-05 at 10 13 03 PM" src="https://github.com/user-attachments/assets/01d40c6a-7de2-4066-bc15-c2b72814a249" />
+
