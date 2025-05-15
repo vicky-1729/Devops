@@ -161,4 +161,3 @@ Without DNS, you'd need to remember IP addresses for every website!
 
 ---
 
-Let me know if you'd like the next day's project content formatted the same way!
