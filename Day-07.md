@@ -1,112 +1,164 @@
-
-# DAY-08  
-## Project # 🤖 Roboshop Project
+# DAY-07  
+## Project - 🤖 Roboshop Project
 
 ---
 
-We will build this project with the following details every time:
+A project setup made with the following:
 
 - **AMI:** devops-practice  
 - **User Name:** ec2-user  
-- **Password:** DevOps321  *(use this user and password)*
+- **Password:** DevOps321 *(use this user and password)*
 
 ---
 
-### 👤 System/Service User
+### 🖥️ What is AMI?
 
-System or service users are non-human users used to run applications.
+**AMI (Amazon Machine Image)** is like a pre-configured OS with some packages.  
+You can use it to create the exact same setup quickly.
 
-- These users **do not** have login access.  
-- We will create a system user for all microservices using:
+#### ✅ Benefits of AMI:
 
-```bash
-useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop
-````
-
-This command creates:
-
-* User: `roboshop`
-* Home Directory: `/app`
-* Shell: `nologin` (no login access)
+- Quick Launch  
+- Consistency  
+- Customization  
+- Scalability  
+- Recovery and Backup  
 
 ---
 
-### 🔐 Password Storage
+### 🌐 IP Address Types
 
-* Passwords are stored encrypted in `/etc/shadow`.
+There are two types of IPs:
 
----
+1. **Private IP** – Used for internal communication (within a network)  
+2. **Public IP** – Used for external communication (Internet access)
 
-### 📂 Application Directory
-
-* All application code (e.g., `catalogue`) will be placed in: `/app`
-
----
-
-### 📦 Software Installation
-
-You can install some packages directly:
-
-```bash
-dnf install nginx
-dnf install mongodb-org
-```
-
-But microservices like `catalogue` or `user` **cannot** be installed directly, since we build them from scratch.
+- **Private IP** → Intranet  
+- **Public IP** → Internet
 
 ---
 
-### 🧑‍💻 Programming Languages & File Types
+### 🆚 Linux Server vs Nginx Server
 
-| Language | File Extension |
-| -------- | -------------- |
-| NodeJS   | `.js`          |
-| Java     | `.java`        |
-| Python   | `.py`          |
-| Go       | `.go`          |
+| Linux Server              | Nginx Server                             |
+|---------------------------|------------------------------------------|
+| Like a physical machine   | A virtual web server running on Linux    |
+| Handles OS-level tasks    | Serves web content over HTTP/HTTPS       |
 
 ---
 
-#### ⚙️ Build Tools
+### 📂 Important Nginx Directories
 
-Build tools help to:
+- `/etc/nginx/nginx.conf`  
+  → This is the main configuration file.  
+  → Any changes in config should be done here.  
+  → After changes, **restart nginx** to apply them.
 
-* Compile code
-* Download dependencies
-* Prepare the app to run
-
-| Language | Build Tool | Build File           |
-| -------- | ---------- | -------------------- |
-| NodeJS   | `npm`      | `package.json`       |
-| Java     | `maven`    | `pom.xml`            |
-| Python   | `pip`      | `requriements.txt`   |
-| go lang  | `go`       | `.go`
-
-*Every programming language has dependencies or libraries.*
-
-For example, to install dependencies in NodeJS:
-
-```bash
-npm install
-```
-
-This command reads the `package.json` file and installs all dependencies.
+- `/usr/share/nginx/html`  
+  → Default location for Nginx web files (e.g., index.html)  
+  → HTML content is served from this directory.
 
 ---
 
-#### 🔄 Common Steps for All Microservices
+## 🌍 DNS – Domain Name System
 
-1. Install the programming language runtime
-2. Create the application directory
-3. Create the system user
-4. Download the code
-5. Install dependencies
+When you type `facebook.com`, your browser doesn’t understand names. It needs an IP address like `143.234.53.98`.
+
+That’s where **DNS (Domain Name System)** helps.
+
+Without DNS, you'd need to remember IP addresses for every website!
 
 ---
 
-Let me know if you want me to help with systemd service files or anything else!
+### 🧭 DNS Resolution Flow
 
 ```
-
-If you want, I can also prepare a sample `catalogue.service` systemd file example to go with this. Just say the word!
++--------------------+
+|   User's Browser   |
+| (e.g., Chrome, FF) |
++--------------------+
+         |
+         v
++--------------------------+
+| Local DNS Cache Check    |
+| (Browser / OS / Router)  |
++--------------------------+
+         |
+         v
++--------------------------+
+|    DNS Resolver          |
+| (e.g., ISP or Public DNS)|
++--------------------------+
+         |
+         v
++--------------------------+
+| Root DNS Server          |
+| (e.g., .com, .org)       |
++--------------------------+
+         |
+         v
++--------------------------+
+| TLD DNS Server           |
+| (e.g., .com TLD)         |
++--------------------------+
+         |
+         v
++--------------------------+
+| Authoritative DNS Server |
+| (e.g., example.com)      |
++--------------------------+
+         |
+         v
++--------------------------+
+| DNS Record (A, AAAA, MX) |
+| (e.g., 192.0.2.1)        |
++--------------------------+
+         |
+         v
++--------------------------+
+| Return IP to Resolver    |
++--------------------------+
+         |
+         v
++--------------------------+
+| Cache IP Locally         |
+| (Browser / OS / Router)  |
++--------------------------+
+         |
+         v
++--------------------------+
+| Browser Connects to IP   |
+| and Loads Website        |
++--------------------------+
 ```
+
+---
+
+### 🧠 DNS Components (Explained Simply)
+
+- **DNS Resolver**  
+  → Converts domain names into IP addresses  
+  → Usually provided by your ISP or public DNS like Google (8.8.8.8)
+
+- **Root Server**  
+  → Knows where TLD servers (.com, .org, etc.) are located  
+  → First step in the DNS journey
+
+- **TLD Server**  
+  → Manages domain endings like `.com`, `.net`, `.in`, etc.  
+  → Points to the correct authoritative server
+
+- **Authoritative Server**  
+  → Has the actual DNS records for a domain (like A, CNAME, MX)  
+  → Gives the final IP to your browser
+
+- **TTL (Time To Live)**  
+  → Temporary storage of DNS info to reduce lookups  
+  → Cached until TTL expires, then fresh lookup happens
+
+- **Name Server**  
+  → Says who is managing the DNS for a domain (e.g., AWS, GoDaddy)
+
+---
+
+Let me know if you'd like the next day's project content formatted the same way!
