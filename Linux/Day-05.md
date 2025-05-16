@@ -1,17 +1,16 @@
-## DAY-05 - 
- ## Linux Permissions, Ownership, Package & Service Management 
+## DAY-05 – Linux Permissions, Ownership, Package & Service Management
 
 ---
 
 ### 🔐 Permissions
 
-| Symbol | Meaning  | Value |
-|--------|----------|-------|
-| R      | Read     | 4     |
-| W      | Write    | 2     |
-| X      | Execute  | 1     |
+| Symbol | Meaning | Value |
+| ------ | ------- | ----- |
+| R      | Read    | 4     |
+| W      | Write   | 2     |
+| X      | Execute | 1     |
 
-#### Format:
+#### ➤ Permission Format Breakdown
 
 ```
 -    rwx   r-x   r-x
@@ -22,35 +21,37 @@
 └── File/Directory Type
 ```
 
-#### Symbolic Permission Commands:
+#### ➤ Symbolic Permission Commands
 
 ```bash
 chmod ugo+w <file_name>   # Add write access to User, Group, Others
 chmod ugo-w <file_name>   # Remove write access from User, Group, Others
 ```
 
-#### Numeric (Octal) Permission Format:
+#### ➤ Numeric (Octal) Permission Format
 
 ```bash
 chmod 755 <file_name>
 ```
 
-- **7 = 4+2+1 = rwx** (User)
-- **5 = 4+1   = r-x** (Group)
-- **5 = 4+1   = r-x** (Other)
+* **7 = 4+2+1 = rwx** → Full access for User
+* **5 = 4+1   = r-x** → Read and Execute for Group
+* **5 = 4+1   = r-x** → Read and Execute for Others
 
-> ✅ Only the **owner** or **root** can change permissions.
+✅ Only the **owner** or **root** can change file permissions.
 
 ---
 
 ### 👤 Ownership
 
+#### ➤ Changing File Ownership
+
 ```bash
-chown <user> <file_name>               # Change ownership to user
+chown <user> <file_name>               # Change ownership to a specific user
 chown <user>:<group> <file_name>       # Change ownership to user and group
 ```
 
-> ✅ Only **root** can modify file ownership.
+✅ Only **root** can modify file ownership.
 
 **Examples:**
 
@@ -63,19 +64,20 @@ chown vsvicky:vsgroup demo.txt
 
 ### 🔑 Key-Based SSH Access
 
-#### Steps:
+#### ➤ SSH Key Setup Steps
 
-1. Create the user
-2. User sends their public key to admin
-3. Admin:
-   - Create `.ssh` directory under `/home/<user>`
-   - Set permission `700` to `.ssh`
-   - Create `authorized_keys` inside `.ssh`
-   - Set permission `600` to `authorized_keys`
-   - Add the public key to this file
-   - Change ownership of files to user
+1. Create the user account (if not already created)
+2. Ask the user to send their **public SSH key**
+3. On the server (as admin):
 
-#### Commands:
+   * Create a `.ssh` directory under `/home/<user>`
+   * Set permission `700` to `.ssh`
+   * Create `authorized_keys` file inside `.ssh`
+   * Set permission `600` to `authorized_keys`
+   * Paste the public key into the `authorized_keys` file
+   * Change ownership of `.ssh` and its contents to the user
+
+#### ➤ Commands:
 
 ```bash
 mkdir /home/vs/.ssh
@@ -87,7 +89,7 @@ chmod 600 /home/vs/.ssh/authorized_keys
 chown vs:vs /home/vs/.ssh/authorized_keys
 ```
 
-#### Test Login:
+#### ➤ Test SSH Login:
 
 ```bash
 ssh -i <private_key_file> <ec2-user>@<IP_ADDRESS>
@@ -97,47 +99,47 @@ ssh -i <private_key_file> <ec2-user>@<IP_ADDRESS>
 
 ### 🔐 Root Access (sudo)
 
-- **File to update**: `/etc/sudoers`
-- Recommended: Add user to **wheel** group
+* Config File: `/etc/sudoers`
+* Recommended: Add the user to the **wheel** group for sudo access
 
-> ✅ Safest method: Add user to wheel group with `NOPASSWD` option
+✅ Safer approach: Configure user with **NOPASSWD** option in `sudoers` file if needed.
 
 ---
 
 ## 📦 Package Management
 
-- Ubuntu-based → `apt-get`
-- RHEL-based → `yum` or `dnf`
+* For **Ubuntu/Debian-based systems**: Use `apt-get`
+* For **RHEL/CentOS/Fedora-based systems**: Use `dnf` or `yum`
 
-### Commands:
+### ➤ Common Commands
 
 ```bash
 dnf install <package_name>             # Install package
 dnf install <package_name> -y          # Install without confirmation
 
-dnf list installed                     # List installed packages
-dnf list available                     # List available packages
-dnf list available | grep python       # Filter by name
+dnf list installed                     # List all installed packages
+dnf list available                     # List all available packages
+dnf list available | grep python       # Filter available packages by name
 
-dnf remove <package_name>              # Remove package
-dnf remove <package_name> -y           # Remove without confirmation
+dnf remove <package_name>              # Uninstall a package
+dnf remove <package_name> -y           # Uninstall without confirmation
 ```
 
 ---
 
 ## 🛠️ Service Management (systemd)
 
-> ✅ Requires `sudo` or `root` access
+✅ Requires **root** or `sudo` access
 
-### Commands:
+### ➤ Systemctl Commands
 
 ```bash
-systemctl start <service>     # Start service
-systemctl stop <service>      # Stop service
-systemctl restart <service>   # Restart service
-systemctl status <service>    # Check status
-systemctl enable <service>    # Start on boot
-systemctl disable <service>   # Do not start on boot
+systemctl start <service>     # Start a service
+systemctl stop <service>      # Stop a service
+systemctl restart <service>   # Restart a service
+systemctl status <service>    # View current status
+systemctl enable <service>    # Enable auto-start on boot
+systemctl disable <service>   # Disable auto-start on boot
 ```
 
 **Example:**
@@ -150,27 +152,24 @@ systemctl enable nginx
 
 ---
 
-## ⏱️ SSH Session Timeout Fix
+## ⏱️ Fixing SSH Session Timeout
 
-### File to Edit:
+### ➤ Edit Configuration File
 
 ```bash
 /etc/ssh/sshd_config
 ```
 
-### Add or Update:
+### ➤ Add or Update These Settings
 
 ```conf
 ClientAliveInterval 2400
 ClientAliveCountMax 3
 ```
 
-### Apply Changes:
+### ➤ Apply the Changes
 
 ```bash
 systemctl restart sshd
 ```
 
----
-
-✅ With this, you have a clear understanding of Linux permissions, users, package management, and system services!
