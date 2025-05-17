@@ -1,4 +1,6 @@
+#!/bin/bash
 
-NAME="linux"  
-echo "$NAME_world"      # This prints nothing or an error  
-echo "${NAME}_world"    # This prints: linux_world
+NAME="vsvicky"
+
+echo "printing name :$NAME"
+echo "printing name :${NAME}"
