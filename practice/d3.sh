@@ -1,5 +1,5 @@
 #! /bin/bash
 
 
-echo "printing the time:$time"
+echo "printing the time: $(date +%T)"
 
