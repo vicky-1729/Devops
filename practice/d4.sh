@@ -2,5 +2,5 @@
 
 NAME="vsvicky"
 
-echo "printing name :$NAME"
-echo "printing name :${NAME}"
+echo "printing name :$NAME_vicky"
+echo "printing name :${NAME}_vicky"
