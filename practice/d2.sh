@@ -7,5 +7,5 @@ echo "write the 2nd fruit name bujjamma:$2"
 echo "write all products bujjamma:$@"
 echo "count the products bujjamma:$#"
 
-ech0 "end of the project dobe bye:$NAME"
+echo "end of the project dobe bye:$NAME"
 
