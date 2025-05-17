@@ -1,8 +1,8 @@
 #!/bin/bash
 
-NAME="vsvicky"
+name="vsvicky"
 
 
-echo "Hello $NAME"
-echo "Nothing to worry $NAME time"
-echo "You can banglore $NAME"
+echo "Hello $name"
+echo "Nothing to worry $name time"
+echo "You can banglore $name"
