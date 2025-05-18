@@ -16,6 +16,7 @@ then
     echo "mysql is already installed"
 else
     echo "mysql is not installed"
+    echo "installing mysql"
     dnf install mysql-server -y
 
     if [ "$?" -eq 0 ]
