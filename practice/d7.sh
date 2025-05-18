@@ -8,5 +8,4 @@ then
 else
     echo "your are not a root ,use sudo or root user for exctution"
     exit 1
-
-
+fi
