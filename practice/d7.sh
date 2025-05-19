@@ -1,31 +1,30 @@
 #!/bin/bash
 
-#check wheather the user is root or not 
+# Check whether the user is root or not
 
 if [ "$(id -u)" -eq 0 ]
 then
-    echo "your are root user"
+    echo "You are root user"
 else
-    echo "your are not a root ,use sudo or root user for exctution"
+    echo "You are not a root user, use sudo or root user for execution"
     exit 1
 fi
 
-
-# now we are weiring script for package installation
+# Now we are writing script for package installation
 dnf list installed | grep mysql
 if [ "$?" -eq 0 ]
 then
-    echo "mysql is already installed no need to anything"
+    echo "MySQL is already installed, no need to do anything"
     exit 1
 else
-    echo "mysql is not installed ,so we are going to install it"
+    echo "MySQL is not installed, so we are going to install it"
 
     dnf install mysql -y
     if [ "$?" -eq 0 ]
     then
-        echo "my sql is installed suceesfully"
+        echo "MySQL is installed successfully"
     else
-        echo "mysql is not installed"
+        echo "MySQL installation failed"
         exit 1
     fi
 fi
