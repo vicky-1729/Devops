@@ -12,3 +12,5 @@ red="\e[31m"
 green="\e[32m"
 yellow ="\e[33m"
 megenta="\e[36m"
+
+echo -e "$red wipro $green is $yellow good $megenta company"
