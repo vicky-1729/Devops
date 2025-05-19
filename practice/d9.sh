@@ -1,33 +1,38 @@
 #!/bin/bash
 
 # Check whether the user is root or not
-
-if [ "$(id -u)" -eq 0 ]; then
-    echo "You are root user"
-else
-    echo "You are not a root user, use sudo or root user for execution"
-    exit 1
-fi
-
 # Define colors
 r="\e[31m"
 g="\e[32m"
 y="\e[33m"
 m="\e[36m"
-reset="\e[0m"
+set="\e[0m"
 
-# Check if mysql package is installed
-rpm -q mysql &> /dev/null
-if [ "$?" -eq 0 ]; then
-   echo -e "${g}MySQL is installed successfully${reset}"
-   exit 0
+#checking user has sudo user or not
+
+if [ "$(id -u)" -eq 0 ]
+then
+    echo "You are ${m}root user${set}"
+else
+    echo "You are ${r}not ${m}root user${set}, use sudo or root user for execution"
+    exit 1
+fi
+
+# Now we are writing script for package installation
+dnf list installed mysql
+if [ "$?" -eq 0 ]
+then
+    echo "MySQL is already installed, no need to do anything"
+    exit 1
 else
     echo "MySQL is not installed, so we are going to install it"
+
     dnf install mysql -y
-    if [ "$?" -eq 0 ]; then
-        echo -e "${g}MySQL is installed successfully${reset}"
+    if [ "$?" -eq 0 ]
+    then
+        echo "MySQL is installed successfully"
     else
-        echo -e "${r}MySQL installation failed${reset}"
+        echo "MySQL installation failed"
         exit 1
     fi
 fi
