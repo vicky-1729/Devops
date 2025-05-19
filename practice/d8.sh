@@ -4,4 +4,4 @@
 
 echo "vsvicky printig with colors"
 
-echo -e " your name is \e[31m vs \e[32 vicky"
+echo -e " your name is \e[31m vs \e[32m vicky"
