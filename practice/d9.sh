@@ -25,7 +25,7 @@ then
     echo "MySQL is already installed, no need to do anything"
     exit 1
 else
-    echo "MySQL is not installed, so we are going to install it"
+    echo "MySQL is ${r}not installed, ${g}so we are going to install it${set}"
 
     dnf install mysql -y
     if [ "$?" -eq 0 ]
