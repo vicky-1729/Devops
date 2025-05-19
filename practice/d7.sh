@@ -12,7 +12,7 @@ fi
 
 
 # now we are weiring script for package installation
-dnf installed mysql
+dnf list installed | grep mysql
 if [ "$?" -eq 0 ]
 then
     echo "mysql is already installed no need to anything"
@@ -20,8 +20,7 @@ then
 else
     echo "mysql is not installed ,so we are going to install it"
 
-    dnf install mysql
-
+    dnf install mysql -y
     if [ "$?" -eq 0 ]
     then
         echo "my sql is installed suceesfully"
