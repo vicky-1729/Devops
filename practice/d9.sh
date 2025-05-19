@@ -22,10 +22,10 @@ fi
 dnf list installed mysql
 if [ "$?" -eq 0 ]
 then
-    echo "MySQL is already installed, no need to do anything"
+    echo -e "MySQL is ${y}already installed, ${g}no need to do anything${set}"
     exit 1
 else
-    echo "MySQL is ${r}not installed, ${g}so we are going to install it${set}"
+    echo -e "MySQL is ${r}not installed, ${g}so we are going to install it${set}"
 
     dnf install mysql -y
     if [ "$?" -eq 0 ]
