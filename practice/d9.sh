@@ -2,19 +2,19 @@
 
 # Check whether the user is root or not
 # Define colors
-r="\e[31m"
-g="\e[32m"
-y="\e[33m"
-m="\e[36m"
-set="\e[0m"
+r="\033[31m"
+g="\033[32m"
+y="\033[33m"
+m="\033[36m"
+set="\033[0m"
 
 #checking user has sudo user or not
 
 if [ "$(id -u)" -eq 0 ]
 then
-    echo "You are ${m}root user${set}"
+    echo -e "You are ${m}root user${set}"
 else
-    echo "You are ${r}not ${m}root user${set}, use sudo or root user for execution"
+    echo -e "You are ${r}not ${m}root user${set}, use sudo or root user for execution"
     exit 1
 fi
 
