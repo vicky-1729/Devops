@@ -19,8 +19,8 @@ reset="\e[0m"
 # Check if mysql package is installed
 rpm -q mysql &> /dev/null
 if [ "$?" -eq 0 ]; then
-    echo -e "MySQL is already ${g}installed${reset}, no need to do anything"
-    exit 0
+   echo -e "${g}MySQL is installed successfully${reset}"
+   exit 0
 else
     echo "MySQL is not installed, so we are going to install it"
     dnf install mysql -y
