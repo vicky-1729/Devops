@@ -1,2 +1,0 @@
-This is a sample text written in demo1.txt.
-You can add more lines as needed.
