@@ -18,21 +18,73 @@ else
     exit 1
 fi
 
-# Now we are writing script for package installation
+V(){
+    if [ "$1" -eq 0 ]
+    then
+        echo " $2 is installed successfully " | tee -a "log_files"
+    else
+        echo " $2 installation failed " | tee -a "log_files"
+        exit 1
+    fi
+}
+
+
+log_folder="/var/log/shell-scripting-logs"
+script_name="(echo $0 | cut -d "." -f1)"
+log_files="$log_folder/$script_name.log"
+all_packages=("MySQL" "JAVA" "nginx" "python3")
+# Now we are writing script for package installation mysql,nginx
+
+
+mkdir -p log_folder
+echo "printing the current time $(date)" &>> log_files
+
+
+
+for package in ${all_packages[@]} 
+do
+    dnf list installed $package
+    if [ "$?" -eq 0 ]
+then
+    echo -e "$packageis ${y}already installed, ${g}no need to do anything${set}" &>> log_files
+    exit 0
+else
+    echo -e "$package is ${r}not installed, ${g}so we are going to install it${set}" &>> log_files
+    dnf install mysql -y
+    V $? "$package" 
+fi
+done
+
+
+
 dnf list installed mysql
 if [ "$?" -eq 0 ]
 then
-    echo -e "MySQL is ${y}already installed, ${g}no need to do anything${set}"
-    exit 1
+    echo -e "MySQL is ${y}already installed, ${g}no need to do anything${set}" &>> log_files
+    exit 0
 else
-    echo -e "MySQL is ${r}not installed, ${g}so we are going to install it${set}"
-
+    echo -e "MySQL is ${r}not installed, ${g}so we are going to install it${set}" &>> log_files
     dnf install mysql -y
-    if [ "$?" -eq 0 ]
-    then
-        echo "MySQL is installed successfully"
-    else
-        echo "MySQL installation failed"
-        exit 1
-    fi
+    V $? "MySQL" 
 fi
+
+# instead of &== use tee comamnd
+
+
+dnf list installed nginx &>> log_files
+if [ "$?" -eq 0 ]
+then
+    echo "nginx installed alreday no need do anything" | tee -a log_files
+    exit 0
+else
+    cho "nginx not installed ,wait for few sec , installing in prgress " | tee -a "log_files"
+    dnf install nginx -y
+    v $? "nginx"
+
+fi
+
+    
+
+
+
+
