@@ -2,4 +2,4 @@
 
 echo "printing the process id of the script 1d:$$"
 echo "for script 1d"
-./2d.sh
+source 2d.sh
