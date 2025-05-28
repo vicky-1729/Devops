@@ -1,16 +1,11 @@
 - name: testing
   hosts: localhost
   connection: local
+  
   tasks:
     - name: printing dummy message
       ansible.builtin.debug:
         msg: 1st script running successfully
-
-- name: development
-  hosts: localhost
-  connection: local
-
-  tasks:
     - name: printing another dummy mesg
       ansible.builtin.debug:
         msg: 2nd script successfully executed
