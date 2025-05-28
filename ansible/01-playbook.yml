@@ -1,7 +1,7 @@
 - name: testing
-  host: local
+  hosts: local
   connection: local
   tasks:
     - name: printing 1st script
       ansible.builtin.debug:
-        msg: 1st script exucted sucessfully...1
+        msg: 1st script executed successfully...!
