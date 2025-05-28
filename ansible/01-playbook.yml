@@ -1,8 +1,8 @@
-- name: testing
-  hosts: localhost
-  connection: local
-  
-  tasks: #list of tasks we can execute
+- name: testing #playbook name
+  hosts: localhost #target host
+  connection: local # no need of username and password
+
+  tasks: #list of tasks we can done in that play book
     - name: printing dummy message
       ansible.builtin.debug:
         msg: 1st script running successfully

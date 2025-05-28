@@ -1,0 +1,4 @@
+- name: nginx installation
+  hosts: vs
+
+  tasks: nginx installation
