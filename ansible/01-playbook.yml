@@ -1,5 +1,6 @@
 - name: testing
   host: local
+  connection: local
   tasks:
     - name: printing 1st script
       ansible.builtin.debug:
