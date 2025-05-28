@@ -1,10 +1,10 @@
 - name: testing
   hosts: localhost
   connection: local
-
-  tasks:
+  
+  tasks: #list of tasks we can execute
     - name: printing dummy message
-      debug:
+      ansible.builtin.debug:
         msg: 1st script running successfully
     - name: printing another dummy mesg
       debug:
