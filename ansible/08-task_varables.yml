@@ -1,0 +1,13 @@
+- name: task varables
+  hosts: local
+
+  tasks:
+    - name: task varables
+      ansible.builtin.debug:
+        msg: "i had studied at {{SCHOOL}} in class {{CLASS}} at village {{VILLAGE}}"
+      vars:
+        SCHOOL: "ZPHS"
+        CLASS: "SSC"
+        VILLAGE: "KADUMU"
+    
+    
