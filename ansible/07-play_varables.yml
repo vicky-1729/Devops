@@ -3,10 +3,13 @@
   vars:
     SCHOOL: "ZPHS High School"
     CLASS: "10TH CLASS"
-    VILLAGE: "KIDIGAM"
+    VILLAGE: "KADUMU"
+
   tasks:
     - name: printing content from variabs
       ansible.builtin.debug:
         msg: "i had studied at {{SCHOOL}} in class {{CLASS}} at village {{VILLAGE}}"
 
-
+    - name: printing same content from variables
+      ansible.builtin.debug:
+        msg: "{{SCHOOL}},{{CLASS}},{{VILLAGE}}"
