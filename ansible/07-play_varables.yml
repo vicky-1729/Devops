@@ -6,7 +6,7 @@
     VILLAGE: "KIDIGAM"
   tasks:
     - name: printing content from variabs
-      anssible.builtin.debug:
+      ansible.builtin.debug:
         msg: "i had studied at {{SCHOOL}} in class {{CLASS}} at village {{VILLAGE}}"
 
 
