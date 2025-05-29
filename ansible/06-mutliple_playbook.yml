@@ -2,7 +2,7 @@
   hosts: local
   tasks: 
   - name: task1 from play1
-    ansible.built.in.debug:
+    ansible.builtin.debug:
       msg: "task1 from play1 ..!"
   - name: task2 from play2
     ansible.builtin.debug:
