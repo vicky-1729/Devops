@@ -1,5 +1,6 @@
 - name: ansible facts
   hosts: local
+  connection: local
   tasks:
     - name: printing ansible facts
       ansible.builtin.debug:
