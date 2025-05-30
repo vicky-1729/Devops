@@ -1,5 +1,6 @@
 - name: working prompt 
   hosts: local
+  connection: local
   vars_prompt:
     - name: user_name
       prompt: "please enter your user_name"
