@@ -2,14 +2,18 @@
   hosts: local
   connection: local
  
-  tasks:
-    - name: check whether this number is positive or negative
-      vars_prompt:
-        - name: number
-          prompt: "please enter the number"
-          private: false
-      when: {{ number }} > 0
-       msg: "The number {{ number }} is positive."
+  vars_prompt:
+    - name: number
+      prompt: "please enter the number"
+      private: false
 
-      when: {{ number }} < 0
-       msg: "The number {{ number }} is negative."
+  tasks:
+    - name: Show if the number is positive
+      debug:
+        msg: "The number {{ number }} is positive."
+      when: number | int > 0
+
+    - name: Show if the number is negative
+      debug:
+        msg: "The number {{ number }} is negative."
+      when: number | int < 0
