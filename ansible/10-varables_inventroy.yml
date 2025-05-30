@@ -4,7 +4,7 @@
 
   tasks:
     - name: printing vars from inventory
-      ansible.nuiltin.debug:
+      ansible.builtin.debug:
         msg: "COURSE:{{COURSE}} DURATION_MONTH:{{DURATION_MONTH}} TIME:{{TIME}} "
 
         
