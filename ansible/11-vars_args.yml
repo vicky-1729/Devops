@@ -1,0 +1,9 @@
+- name: taking varables from cli
+  hosts: local
+  connection: local
+
+  tasks:
+    - name: pass variablesfrom cli
+      ansible.builtin.debug:
+        msg: "C:{{COURSE}} T:{{TIME}} "
+        # outpt: ansible-playbook -e "COURSE=TELUGU" "TIME=2HRS"
