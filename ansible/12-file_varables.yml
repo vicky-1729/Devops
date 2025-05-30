@@ -1,0 +1,9 @@
+- name: taking varables from file_level
+  hosts: local
+  vars_files:
+    - varables.yml
+  tasks:
+    - name: printing the varables from the files
+      ansible.builtin.debug:
+        msg: "{{DESIGNATION}} ,{{TIME}},{{COURSE}}"
+      

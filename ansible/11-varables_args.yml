@@ -6,4 +6,4 @@
     - name: pass variablesfrom cli
       ansible.builtin.debug:
         msg: "C:{{COURSE}} T:{{TIME}} "
-        # outpt: ansible-playbook -e "COURSE=TELUGU" "TIME=2HRS"
+        # outpt: ansible-playbook -e "COURSE=TELUGU" -e "TIME=2HRS"
