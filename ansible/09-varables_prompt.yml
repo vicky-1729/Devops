@@ -8,7 +8,7 @@
 
     - name: user_password
       prompt: "please enter your user_password"
-      #private: true
+      private: false
 
 
   tasks:
