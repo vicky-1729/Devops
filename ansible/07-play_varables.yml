@@ -1,5 +1,6 @@
 - name: varables at play level
   hosts: local
+  connection: local
   vars:
     SCHOOL: "ZPHS High School"
     CLASS: "10TH CLASS"
