@@ -1,0 +1,10 @@
+- name: varables from inventory
+  hosts: local
+  connection: local
+
+  tasks:
+    - name: printing vars from inventory
+      ansible.nuiltin.debug:
+        msg: "COURSE:{{COURSE}} DURATION_MONTH:{{DURATION_MONTH}} TIME:{{TIME}} "
+
+        

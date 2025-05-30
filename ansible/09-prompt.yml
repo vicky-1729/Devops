@@ -13,8 +13,8 @@
   tasks:
     - name: printing the user name
       ansible.builtin.debug:
-        msg: "here is you user_name {{user_name}} & user_password {{user_password}}"
-        
+        msg: "Here is you user_name {{user_name}} & user_password {{user_password}}"
+
 
 
  
