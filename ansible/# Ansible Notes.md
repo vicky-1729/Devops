@@ -8,46 +8,52 @@
 
 ## Pull vs Push Based Mechanism
 
-**Pull:**
-- Server sends updates to clients (e.g., CM Server).
-- Needs agents on each node.
-- Runs on schedule (e.g., every 30 mins).
+**Pull:**  
+- Server (like a configuration management server) pushes updates to clients.
+- Requires an agent running on each client node.
+- Updates are applied on a schedule (e.g., every 30 minutes).
 
-**Push:**
-- Clients request updates when needed (e.g., Ansible).
-- No agents required.
-- Uses SSH to connect and run tasks only when triggered.
+**Push:**  
+- Clients get updates only when needed (on demand).
+- No agent required on the client; uses SSH for communication.
+- Example: Ansible pushes changes directly from the control node.
 
 ---
 
 ## XML vs JSON vs YAML
-- **XML:** Verbose, tag-based, widely used in legacy systems.
-- **JSON:** Lightweight, easy for machines, less readable for humans.
-- **YAML:** Human-friendly, used by Ansible for playbooks.
+
+- **XML:** Verbose, uses tags, common in older systems.
+- **JSON:** Lightweight, easy for machines to parse, less readable for humans.
+- **YAML:** Human-friendly, easy to read/write, used by Ansible for playbooks.
 
 ---
 
 ## Ansible Installation
-- Ubuntu: `sudo apt install ansible`
-- RHEL/CentOS: `sudo dnf install ansible`
+
+- **Ubuntu:**  
+  `sudo apt install ansible`
+- **RHEL/CentOS:**  
+  `sudo dnf install ansible`
 
 ---
 
 ## Ansible Modules
-- Modules are like tools Ansible uses to perform tasks.
+
+- Modules are built-in tools Ansible uses to perform tasks.
 - Common modules:
-  - `ansible.builtin.package`: Install/remove packages.
-  - `ansible.builtin.service`: Start/stop/enable services.
-  - `ansible.builtin.ping`: Test connectivity.
-  - `ansible.builtin.debug`: Print debug messages.
+  - `package`: Install or remove packages.
+  - `service`: Start, stop, or enable services.
+  - `ping`: Test connectivity to hosts.
+  - `debug`: Print debug messages.
 
 ---
 
 ## Playbooks
+
 - Written in YAML.
-- Define what tasks to run and on which hosts.
-- Easy to reuse and share automation steps.
-- Structure example:
+- Define tasks to run on specified hosts.
+- Reusable and easy to share.
+- **Example:**
   ```yaml
   - name: Install Apache
     hosts: webservers
@@ -61,53 +67,60 @@
 
 ---
 
-## Example Playbook
-```yaml
-- name: nginx install and running
-  hosts: vs
-  become: yes
-  tasks:
-    - name: install nginx
-      ansible.builtin.package:
-        name: nginx
-        state: present
-    - name: run nginx
-      ansible.builtin.service:
-        name: nginx
-        state: started
-        enabled: yes
-```
+## Inventory
+
+- A file listing the hosts to manage (in INI or YAML format).
+- **Example (INI):**
+  ```ini
+  [vs]
+  34.201.37.195 ansible_user=ec2-user ansible_password=DevOps321
+
+  [local]
+  localhost
+
+  [local:vars]
+  COURSE=variables
+  TIME=1.5hrs
+  DURATION_MONTH=JAN
+  ```
 
 ---
 
-## Key Concepts
-- **Inventory:** List of hosts to manage (INI or YAML format).
-- **Playbook:** YAML file describing automation tasks.
-- **Module:** Reusable unit (e.g., `package`, `service`, `ping`).
-- **Task:** Single action in a playbook.
-- **Role:** Collection of tasks, files, templates, variables.
+## Variables in Ansible
+
+- **Task Level:** Defined for a single task.
+- **Play Level:** Defined for all tasks in a play.
+- **Inventory Level:** Defined in the inventory file and accessible in playbooks.
+
+---
+
+## Prompting for Variables
+
+- Use `vars_prompt` in a playbook to ask the user for input at runtime.
 
 ---
 
 ## Useful Commands
-- Run playbook:  
+
+- Run a playbook:  
   `ansible-playbook <playbook>.yml`
-- Check hosts:  
+- Ping all hosts:  
   `ansible all -m ping -i <inventory>`
 
 ---
 
 ## Q&A
 
-**1. What is a playbook?**
-- It is a list of plays where we can execute against group of remote servers to perform multiple tasks.
+**What is a playbook?**  
+A YAML file that defines a set of tasks to run on remote servers.
 
-**2. What are Ansible adhoc commands?**
-- It is an Ansible command line tool to perform just one-time actions or emergency actions when you don't have to create a playbook and push.
+**What are Ansible adhoc commands?**  
+One-time commands run from the CLI for quick or emergency tasks, without writing a playbook.
 
 ---
 
 ## Tips
-- Use `become: yes` for privilege escalation (sudo).
-- Indentation and YAML structure are critical.
-- Use variables for reusability.
+
+- Use `become: yes` for sudo privileges.
+- YAML indentation is important—be careful!
+- Use variables to make playbooks reusable and flexible.
