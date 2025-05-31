@@ -4,7 +4,7 @@
 
   tasks:
     - name: printing all roomates names in the list
-      ansible.builtin.debug:
+      ansible.builtin.package:
         - name: {{ item.name }}
         - state: {{ item.state }}
       loop:
