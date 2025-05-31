@@ -5,8 +5,8 @@
   tasks:
     - name: printing all roomates names in the list
       ansible.builtin.debug:
-        - name: {{item.name}}
-        - state: {{ item.state}}
+        - name: {{ item.name }}
+        - state: {{ item.state }}
       loop:
        - { name: nginx ,state: present}
        - { name: apache ,state: absent}
