@@ -6,9 +6,8 @@
     - name: printing all roomates names in the list
       ansible.builtin.debug:
         msg: "Roomate name: {{ item }}"
-        loop:
-         - deepan
-         - sreekar
-         - naveen
-         - vicky
-         
+      loop:
+       - deepan
+       - sreekar
+       - naveen
+       - vicky
