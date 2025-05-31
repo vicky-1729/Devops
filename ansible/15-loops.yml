@@ -1,19 +1,14 @@
-- name: Run package installation/removal loop
-  hosts: local
-  connection: local
+- name: running the loops
+  hosts: vs
   
 
   tasks:
-    - name: Manage software packages
+    - name: install software
       ansible.builtin.package:
-        name: "{{ item.name }}"
-        state: "{{ item.state }}"
+       name: "{{ item.name }}"
+       state: "{{ item.state }}"
       loop:
-        - name: nginx
-          state: present
-        - name: apache
-          state: absent
-        - name: mysql
-          state: present
-        - name: redis
-          state: absent
+       - { name: 'nginx' ,state: 'present'}
+       - { name: 'apache' ,state: 'absent'}
+       - { name: 'mysql' ,state: 'present'}
+       - { name: 'redis' ,state: 'absent'}
