@@ -3,7 +3,7 @@
   connection: local
 
   tasks:
-    - name: printing all roomates names in the list
+    - name: install software
       ansible.builtin.package:
         - name: "{{ item.name }}"
         - state: "{{ item.state }}"
