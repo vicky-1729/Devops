@@ -4,6 +4,7 @@
 
   tasks:
     - name: install software
+      become: true
       ansible.builtin.package:
        name: "{{ item.name }}"
        state: "{{ item.state }}"
