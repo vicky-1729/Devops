@@ -124,3 +124,56 @@ One-time commands run from the CLI for quick or emergency tasks, without writing
 - Use `become: yes` for sudo privileges.
 - YAML indentation is important—be careful!
 - Use variables to make playbooks reusable and flexible.
+
+### What if there is no suitable Ansible module available?
+
+If Ansible does not provide a built-in module for your specific task, you have two main options:
+
+1. **Develop a custom module:**  
+  Write your own Ansible module in Python or another supported language to handle the required functionality.
+
+2. **Use the `shell` or `command` module:**  
+  Execute the necessary commands directly on the remote hosts using Ansible’s `shell` or `command` modules.  
+  - Use `command` for simple commands without shell features.
+  - Use `shell` if you need shell-specific capabilities like pipes, redirection, or environment variables.
+
+Choose the approach that best fits your use case and security requirements.
+
+
+## Shell vs Command Modules in Ansible
+
+Ansible provides two modules for running commands on remote hosts: `shell` and `command`. Understanding their differences helps you choose the right one for your tasks.
+
+- **`shell` module:**  
+  - Runs commands through the shell on the remote host.
+  - Supports shell features like pipes (`|`), redirection (`>`, `<`), and environment variables.
+  - Use when you need shell-specific features or complex commands.
+  - **Example:**  
+    ```yaml
+    - name: List files and save output to a file
+      ansible.builtin.shell: ls -ltr > /tmp/output.txt
+    ```
+
+- **`command` module:**  
+  - Runs commands directly, without a shell.
+  - Does **not** support pipes, redirection, or variable expansion.
+  - Safer and more secure—avoids shell injection risks.
+  - **Example:**  
+    ```yaml
+    - name: List files
+      ansible.builtin.command: ls -l
+    ```
+
+**Tip:**  
+Use `command` whenever possible for security and reliability. Use `shell` only when shell features are required.
+
+---
+
+### What are Ansible ad-hoc commands?
+
+- Ad-hoc commands are one-off Ansible commands run directly from the command line.
+- Useful for quick tasks, testing, or troubleshooting—no playbook needed.
+- **Example:**  
+  ```bash
+  ansible all -m ping -i inventory
+  ```

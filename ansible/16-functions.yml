@@ -1,0 +1,11 @@
+- name: doing function action in ansible
+  hosts: frontend
+  tasks:
+   - name: run a function
+     ansible.builtin.debug:
+       msg: "This is a function call with argument {{ item }}"
+     loop:
+       - 1
+       - 2
+       - 3
+     register: result
