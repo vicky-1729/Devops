@@ -147,10 +147,24 @@ Variables can be defined at different levels, each with its own scope and preced
 Understanding variable precedence helps you control which value is used when the same variable is defined in multiple places.
 
 ---
-
 ## Prompting for Variables
 
 - Use `vars_prompt` in a playbook to ask the user for input at runtime.
+
+**Example:**
+```yaml
+- name: Prompt for username
+  hosts: localhost
+  gather_facts: false
+  vars_prompt:
+    - name: "username"
+      prompt: "Enter your username"
+      private: no
+  tasks:
+    - name: Show entered username
+      ansible.builtin.debug:
+        msg: "You entered: {{ username }}"
+```
 
 ---
 
@@ -332,6 +346,3 @@ This playbook demonstrates the usage of various Ansible filters and functions:
   ```
   *Description: Validates whether the value of `ip` is a valid IP address.*
 
-
-
-at top write index
