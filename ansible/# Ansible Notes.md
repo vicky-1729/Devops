@@ -169,6 +169,50 @@ Understanding variable precedence helps you control which value is used when the
         msg: "You entered: {{ username }}"
 ```
 
+  ## Loops and Conditionals in Ansible
+
+  Ansible allows you to perform repetitive tasks using loops and control task execution with conditionals.
+
+  ### Loops
+
+  Loops let you iterate over a list of items, applying the same task to each item. This is useful for installing multiple packages, creating users, or managing files.
+
+  **Example: Installing Multiple Packages with Different States**
+  ```yaml
+  - name: install packages
+    hosts: frontend
+    become: yes
+    tasks:
+      - name: install packages
+        ansible.builtin.package:
+          name: "{{ item.name }}"
+          state: "{{ item.state }}"
+        loop:
+          - { name: 'nginx', state: 'present' }
+          - { name: 'mysql', state: 'absent' }
+          - { name: 'zip', state: 'absent' }
+  ```
+  *This example installs `nginx`, removes `mysql` and `zip` by looping over a list of dictionaries.*
+
+  ### Conditionals
+
+  Conditionals (`when`) allow you to run tasks only if certain conditions are met.
+
+  **Example:**
+  ```yaml
+  - name: install nginx only if on Ubuntu
+    ansible.builtin.package:
+      name: nginx
+      state: present
+    when: ansible_facts['os_family'] == 'Debian'
+  ```
+  *This task runs only if the target system is Debian-based.*
+
+  **Tips:**
+  - Use `loop` for iterating over lists.
+  - Use `when` for conditional execution.
+  - You can combine loops and conditionals for advanced automation.
+
 ---
 
 ## Useful Commands
