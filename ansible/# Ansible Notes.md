@@ -22,6 +22,8 @@
 - [Register in Ansible](#register-in-ansible)
 - [Ansible Playbook: Functions and Filters Demonstration](#ansible-playbook-functions-and-filters-demonstration)
 
+---
+
 ## What is Ansible?
 
 - Ansible is an open-source automation tool for configuration management, application deployment, and orchestration.
@@ -147,6 +149,7 @@ Variables can be defined at different levels, each with its own scope and preced
 Understanding variable precedence helps you control which value is used when the same variable is defined in multiple places.
 
 ---
+
 ## Prompting for Variables
 
 - Use `vars_prompt` in a playbook to ask the user for input at runtime.
@@ -195,7 +198,7 @@ One-time commands run from the CLI for quick or emergency tasks, without writing
 
 ---
 
-### What if there is no suitable Ansible module available?
+## What if there is no suitable Ansible module available?
 
 If Ansible does not provide a built-in module for your specific task, you have two main options:
 
@@ -240,7 +243,7 @@ Use `command` whenever possible for security and reliability. Use `shell` only w
 
 ---
 
-### What are Ansible ad-hoc commands?
+## What are Ansible ad-hoc commands?
 
 - Ad-hoc commands are one-off Ansible commands run directly from the command line.
 - Useful for quick tasks, testing, or troubleshooting—no playbook needed.
