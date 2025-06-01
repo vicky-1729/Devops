@@ -1,6 +1,29 @@
 # Ansible Notes
 
+## Index
+
+- [What is Ansible?](#what-is-ansible)
+- [Pull vs Push Based Mechanism](#pull-vs-push-based-mechanism)
+- [XML vs JSON vs YAML](#xml-vs-json-vs-yaml)
+- [Ansible Installation](#ansible-installation)
+- [Ansible Modules](#ansible-modules)
+- [Playbooks](#playbooks)
+- [Inventory](#inventory)
+- [Variables in Ansible](#variables-in-ansible)
+  - [Ways to Define Variables](#ways-to-define-variables)
+  - [Variable Precedence (Highest to Lowest)](#variable-precedence-highest-to-lowest)
+- [Prompting for Variables](#prompting-for-variables)
+- [Useful Commands](#useful-commands)
+- [Q&A](#qa)
+- [Tips](#tips)
+- [What if there is no suitable Ansible module available?](#what-if-there-is-no-suitable-ansible-module-available)
+- [Shell vs Command Modules in Ansible](#shell-vs-command-modules-in-ansible)
+- [What are Ansible ad-hoc commands?](#what-are-ansible-ad-hoc-commands)
+- [Register in Ansible](#register-in-ansible)
+- [Ansible Playbook: Functions and Filters Demonstration](#ansible-playbook-functions-and-filters-demonstration)
+
 ## What is Ansible?
+
 - Ansible is an open-source automation tool for configuration management, application deployment, and orchestration.
 - Uses YAML for playbooks (declarative, human-readable).
 
@@ -88,9 +111,40 @@
 
 ## Variables in Ansible
 
-- **Task Level:** Defined for a single task.
-- **Play Level:** Defined for all tasks in a play.
-- **Inventory Level:** Defined in the inventory file and accessible in playbooks.
+Variables in Ansible are used to store values that can be reused throughout your playbooks, making your automation more flexible and maintainable. By defining a variable once, you can reference it in multiple places—following the DRY (Don't Repeat Yourself) principle.
+
+**Example: Defining and Using a Variable**
+```yaml
+vars:
+  SCHOOL: "ZPHS High School"
+
+tasks:
+  - name: Print school name from variable
+    ansible.builtin.debug:
+      msg: "I studied at {{ SCHOOL }}"
+```
+
+### Ways to Define Variables
+
+Variables can be defined at different levels, each with its own scope and precedence:
+
+- **Play level:** Defined in the `vars` section of a play.
+- **Task level:** Defined for a specific task.
+- **File level:** Stored in separate variable files and included as needed.
+- **Prompt level:** Collected from the user at runtime using `vars_prompt`.
+- **Inventory level:** Set in the inventory file for specific hosts or groups.
+- **Command line:** Passed as extra variables (`--extra-vars`) when running a playbook.
+
+### Variable Precedence (Highest to Lowest)
+
+1. **Command line**
+2. **Task level**
+3. **File level**
+4. **Prompt level**
+5. **Play level**
+6. **Inventory level**
+
+Understanding variable precedence helps you control which value is used when the same variable is defined in multiple places.
 
 ---
 
@@ -125,20 +179,23 @@ One-time commands run from the CLI for quick or emergency tasks, without writing
 - YAML indentation is important—be careful!
 - Use variables to make playbooks reusable and flexible.
 
+---
+
 ### What if there is no suitable Ansible module available?
 
 If Ansible does not provide a built-in module for your specific task, you have two main options:
 
 1. **Develop a custom module:**  
-  Write your own Ansible module in Python or another supported language to handle the required functionality.
+   Write your own Ansible module in Python or another supported language to handle the required functionality.
 
 2. **Use the `shell` or `command` module:**  
-  Execute the necessary commands directly on the remote hosts using Ansible’s `shell` or `command` modules.  
-  - Use `command` for simple commands without shell features.
-  - Use `shell` if you need shell-specific capabilities like pipes, redirection, or environment variables.
+   Execute the necessary commands directly on the remote hosts using Ansible’s `shell` or `command` modules.  
+   - Use `command` for simple commands without shell features.
+   - Use `shell` if you need shell-specific capabilities like pipes, redirection, or environment variables.
 
 Choose the approach that best fits your use case and security requirements.
 
+---
 
 ## Shell vs Command Modules in Ansible
 
@@ -177,3 +234,104 @@ Use `command` whenever possible for security and reliability. Use `shell` only w
   ```bash
   ansible all -m ping -i inventory
   ```
+
+---
+
+## Register in Ansible
+
+- The `register` keyword is used to capture the output of a task.
+- Stores the result in a variable for use in later tasks.
+- Useful for conditional logic or debugging.
+- The registered variable contains details like `stdout`, `stderr`, and `rc` (return code).
+
+- **Example:**
+  ```yaml
+  - name: Check disk space
+    command: df -h
+    register: disk_output
+
+  - name: Show disk output
+    debug:
+      var: disk_output.stdout
+  ```
+
+---
+
+## Ansible Playbook: Functions and Filters Demonstration
+
+This playbook demonstrates the usage of various Ansible filters and functions:
+
+- **Default Value:** Shows how to use the `default` filter to provide a fallback value for undefined variables.
+  ```yaml
+  - name: check undefined variable
+    ansible.builtin.debug:
+      msg: "Hello, {{ person | default('Ramesh') }}"
+  ```
+  *Description: If the variable `person` is not defined, it will use `'Ramesh'` as the default value.*
+
+- **String Splitting:** Uses the `split` filter to convert a comma-separated string into a list.
+  ```yaml
+  - name: print names
+    ansible.builtin.debug:
+      msg: "Hello {{ persons | split(',') }}"
+  ```
+  *Description: Splits the string in `persons` into a list of names using the comma as a separator.*
+
+- **Dictionary to List Conversion:** Utilizes the `dict2items` filter to convert a dictionary (map) into a list of key-value pairs.
+  ```yaml
+  - name: convert map into list
+    vars:
+      course:
+        name: ansible
+        duration: 10HR
+        trainer: sivakumar
+    ansible.builtin.debug:
+      msg: "Course Info: {{ course | dict2items  }}"
+  ```
+  *Description: Converts the `course` dictionary into a list of items, each with a `key` and `value`.*
+
+- **List to Dictionary Conversion:** Uses the `items2dict` filter to convert a list of key-value pairs into a dictionary (map).
+  ```yaml
+  - name: convert list into map
+    vars:
+      course:
+      - {'key': 'name', 'value': 'ansible'}
+      - {'key': 'duration', 'value': '10HR'}
+      - {'key': 'trainer', 'value': 'sivakumar'}
+    ansible.builtin.debug:
+      msg: "Course Info: {{ course | items2dict  }}"
+  ```
+  *Description: Converts the list of key-value pairs in `course` back into a dictionary.*
+
+- **String Case Conversion:** Demonstrates the use of `upper` and `lower` filters to change the case of strings.
+  ```yaml
+  - name: convert to uppercase
+    vars:
+      name: "Sivakumar Reddy M"
+    ansible.builtin.debug:
+      msg: "Hello {{ name | upper }}"
+  ```
+  *Description: Converts the value of `name` to uppercase.*
+
+  ```yaml
+  - name: convert to lowercase
+    vars:
+      name: "Sivakumar Reddy M"
+    ansible.builtin.debug:
+      msg: "Hello {{ name | lower }}"
+  ```
+  *Description: Converts the value of `name` to lowercase.*
+
+- **IP Address Validation:** Applies the `ansible.utils.ipaddr` filter to check if a given string is a valid IP address.
+  ```yaml
+  - name: check IP address is valid or not
+    vars:
+      ip: "192.168.1.1"
+    ansible.builtin.debug:
+      msg: "{{ ip | ansible.utils.ipaddr }}"
+  ```
+  *Description: Validates whether the value of `ip` is a valid IP address.*
+
+
+
+at top write index
