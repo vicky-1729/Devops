@@ -21,6 +21,15 @@
 - [What are Ansible ad-hoc commands?](#what-are-ansible-ad-hoc-commands)
 - [Register in Ansible](#register-in-ansible)
 - [Ansible Playbook: Functions and Filters Demonstration](#ansible-playbook-functions-and-filters-demonstration)
+- [Ansible Tags](#ansible-tags)
+  - [Example: Deployment/Release Process](#example-deploymentrelease-process)
+  - [Including Other Roles](#including-other-roles)
+    - [include_role:](#include_role)
+    - [import_role:](#import_role)
+- [Background Commands](#background-commands)
+- [Ansible Roles](#ansible-roles)
+- [Ansible Templates](#ansible-templates)
+- [Directory Structure in Ansible Roles](#directory-structure-in-ansible-roles)
 
 ---
 
@@ -392,4 +401,102 @@ This playbook demonstrates the usage of various Ansible filters and functions:
       msg: "{{ ip | ansible.utils.ipaddr }}"
   ```
   *Description: Validates whether the value of `ip` is a valid IP address.*
+
+---
+
+## Ansible Tags
+
+Tags in Ansible allow you to run specific parts of your playbook selectively. You can assign tags to plays, tasks, and roles, and then use the `--tags` or `--skip-tags` options when running `ansible-playbook` to control what gets executed.
+
+### Example: Deployment/Release Process
+
+1. **Announce downtime** (e.g., 6 hours)
+2. **Stop the catalogue service**
+3. **Remove old code**
+   - Delete the `/app` directory
+   - Recreate `/app`
+4. **Download the new code**
+5. **Restart the catalogue service**
+
+---
+
+## Including Other Roles
+
+### include_role:
+- Includes the role’s tasks at runtime.
+- Validation happens at runtime (not before playbook execution).
+- **Example:**
+  ```yaml
+  - name: Include the payment role at runtime
+    ansible.builtin.include_role:
+      name: payment
+    tags: [deploy, payment]
+  ```
+- Tags and when conditions apply only to the include_role statement, not to the tasks inside the role.
+
+### import_role:
+- Includes and validates the role and its tasks before playbook execution (at parse time).
+- **Example:**
+  ```yaml
+  - name: Import the user role at parse time
+    ansible.builtin.import_role:
+      name: user
+    tags: [setup, user]
+  ```
+- Tags and when conditions apply to both the import_role statement and all tasks within the role.
+
+---
+
+Use tags to control which parts of your playbook run, and choose include_role or import_role based on when you want validation and how you want tags/conditions to apply.
+
+---
+
+## Background Commands
+--------------------
+- `&` : Runs a command in the background, but the process will stop if the terminal is closed.
+- `nohup <command> &` : Runs a command in the background and keeps it running even after the terminal is closed.
+
+**Example:**
+```sh
+nohup ansible-playbook -i roboshop.ini frontend.yml &>> /home/ec2-user/frontend.log &
+```
+- This runs the playbook in the background and logs output to `/home/ec2-user/frontend.log`.
+
+**Check Output:**
+```sh
+tail -f /home/ec2-user/frontend.log
+```
+- Shows live updates from the log file.
+
+---
+
+## Ansible Roles
+----------------
+- **DRY (Don't Repeat Yourself):** Roles help you avoid repeating code by organizing reusable automation.
+- **Roles** provide a proper directory structure for writing Ansible playbooks, making them modular and reusable.
+
+**Syntax:**
+- Use `roles:` in your playbook to include roles instead of writing all tasks directly.
+
+---
+
+## Ansible Templates
+--------------------
+- **template:**
+  - Used for files with placeholders (variables) using Jinja2 formatting.
+  - Placeholders are replaced with actual values at runtime, supplied through variables.
+- **file:**
+  - Used for static files. The content is copied as-is, without any variable changes or processing.
+
+---
+
+## Directory Structure in Ansible Roles
+--------------------------------------
+- **tasks/** : Contains the main tasks for the role (the steps to be executed).
+- **files/** : Store all static files required by the role here.
+- **templates/** : Store all template files (with Jinja2 placeholders) here. These files can use variables that are replaced at runtime.
+- **vars/** : Contains all variables required for the role.
+- **handlers/** : Handlers are notifiers in Ansible. When there is a change in something, if you want to notify another task, you can use handlers. For example, a change in the Nginx config can notify a restart Nginx task in handlers (`main.yml`).
+
+---
 
