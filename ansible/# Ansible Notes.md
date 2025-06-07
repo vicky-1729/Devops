@@ -500,3 +500,43 @@ tail -f /home/ec2-user/frontend.log
 
 ---
 
+## Ansible Error Handling
+======================
+Error handling in Ansible means deciding what to do if a task fails or succeeds.
+
+- Use `ignore_errors: true` if you want to skip errors and continue with the next tasks.
+- You can use `block`, `rescue`, and `always` to handle errors and run recovery or cleanup steps.
+
+**Simple Example:**
+```yaml
+- name: Try to restart nginx
+  ansible.builtin.service:
+    name: nginx
+    state: restarted
+  ignore_errors: true
+
+- name: Print a message if nginx restart failed
+  ansible.builtin.debug:
+    msg: "Nginx restart failed, but moving on."
+  when: nginx_restart is failed
+```
+
+**Block/Rescue Example:**
+```yaml
+- name: Error handling example
+  block:
+    - name: Do something risky
+      ansible.builtin.command: /bin/false
+  rescue:
+    - name: Handle the error
+      ansible.builtin.debug:
+        msg: "Something went wrong, but we handled it."
+  always:
+    - name: Always runs
+      ansible.builtin.debug:
+        msg: "This runs no matter what."
+```
+
+- Use `ignore_errors` for simple skipping.
+- Use `block`/`rescue`/`always` for more control.
+
