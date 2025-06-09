@@ -1,6 +1,4 @@
-
-
-# Ansible Collections vs Plugins
+## Ansible Collections vs Plugins
 
 **Ansible Collections:**
 - Collections are a way to package and distribute Ansible content (like roles, modules, plugins, playbooks, and docs) together.
@@ -21,7 +19,7 @@
 - **Plugin** = a single piece of code that extends Ansible’s features (can be part of a collection or standalone)
 
 ---
-# Ansible Limitations in State Management
+## Ansible Limitations in State Management
 
 - Ansible doesn't remember what infra is already there. If someone changes something directly in the cloud console, Ansible has no idea about those changes, so it can't track the real state of your resources.
 - If you run Ansible again, it might try to create the same thing again, so you can get duplicate resources or errors. This is because Ansible just runs the tasks you give it, without checking what already exists in the cloud.
@@ -29,7 +27,7 @@
 
 ---
 
-# Problems with Doing Infra Manually
+## Problems with Doing Infra Manually
 
 - Doing everything by hand takes a lot of time, especially if you have to repeat the same steps for different environments or projects.
 - More chances to make mistakes, like clicking the wrong button or missing a step, which can cause issues later.
@@ -39,7 +37,7 @@
 
 ---
 
-# Infra as Code (IaC) - Why It's Better
+## Infra as Code (IaC) - Why It's Better
 
 - **Version Control:**  
   - All infra code is in Git, so you can see who changed what, when, and why. You can review changes, roll back if needed, and work with your team easily. This makes collaboration and tracking super simple.

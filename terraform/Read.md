@@ -1,6 +1,6 @@
 # Terraform
 ## Day-01
-
+### Ansible Collections vs Plugins
 ### Ansible Limitations in State Management
 ### Problems with Doing Infra Manually
 ### Infra as Code (IaC) - Why It's Better
