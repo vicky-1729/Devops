@@ -1,3 +1,26 @@
+
+
+# Ansible Collections vs Plugins
+
+**Ansible Collections:**
+- Collections are a way to package and distribute Ansible content (like roles, modules, plugins, playbooks, and docs) together.
+- They make it easy to share and reuse automation code.
+- You can install collections from Ansible Galaxy or other sources using `ansible-galaxy collection install <collection_name>`.
+
+- Collections help organize content by grouping related things together (for example, all AWS modules and plugins are in the `amazon.aws` collection).
+- Collections can include plugins, modules, roles, and even documentation.
+
+**Ansible Plugins:**
+- Plugins are pieces of code that add specific features or extend Ansible’s core functionality.
+- There are many types of plugins: connection plugins, lookup plugins, filter plugins, callback plugins, etc.
+- Plugins are usually used to customize how Ansible works (for example, how it connects to hosts, how it processes data, or how it displays output).
+- Plugins can be included inside a collection, but they can also be written and used locally in your project.
+
+**In short:**
+- **Collection** = a bundle of Ansible content (can include plugins, modules, roles, docs, etc.)
+- **Plugin** = a single piece of code that extends Ansible’s features (can be part of a collection or standalone)
+
+---
 # Ansible Limitations in State Management
 
 - Ansible doesn't remember what infra is already there. If someone changes something directly in the cloud console, Ansible has no idea about those changes, so it can't track the real state of your resources.
@@ -33,27 +56,6 @@
 - **Modules:**  
   - Can reuse and extend code using modules, makes life easy, especially with Terraform. You can create reusable building blocks for your infra, so you don't have to write the same code again and again. This also helps keep your code clean and organized.
 
-
-
-# Ansible Collections vs Plugins
-
-**Ansible Collections:**
-- Collections are a way to package and distribute Ansible content (like roles, modules, plugins, playbooks, and docs) together.
-- They make it easy to share and reuse automation code.
-- You can install collections from Ansible Galaxy or other sources using `ansible-galaxy collection install <collection_name>`.
-
-- Collections help organize content by grouping related things together (for example, all AWS modules and plugins are in the `amazon.aws` collection).
-- Collections can include plugins, modules, roles, and even documentation.
-
-**Ansible Plugins:**
-- Plugins are pieces of code that add specific features or extend Ansible’s core functionality.
-- There are many types of plugins: connection plugins, lookup plugins, filter plugins, callback plugins, etc.
-- Plugins are usually used to customize how Ansible works (for example, how it connects to hosts, how it processes data, or how it displays output).
-- Plugins can be included inside a collection, but they can also be written and used locally in your project.
-
-**In short:**
-- **Collection** = a bundle of Ansible content (can include plugins, modules, roles, docs, etc.)
-- **Plugin** = a single piece of code that extends Ansible’s features (can be part of a collection or standalone)
 
 ---
 
