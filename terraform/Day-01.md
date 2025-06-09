@@ -33,7 +33,7 @@
 - **Modules:**  
   - Can reuse and extend code using modules, makes life easy, especially with Terraform. You can create reusable building blocks for your infra, so you don't have to write the same code again and again. This also helps keep your code clean and organized.
 
----
+
 
 # Ansible Collections vs Plugins
 
@@ -41,6 +41,7 @@
 - Collections are a way to package and distribute Ansible content (like roles, modules, plugins, playbooks, and docs) together.
 - They make it easy to share and reuse automation code.
 - You can install collections from Ansible Galaxy or other sources using `ansible-galaxy collection install <collection_name>`.
+
 - Collections help organize content by grouping related things together (for example, all AWS modules and plugins are in the `amazon.aws` collection).
 - Collections can include plugins, modules, roles, and even documentation.
 
