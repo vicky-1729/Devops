@@ -46,3 +46,11 @@ variable "instances" {
    # type = list(string)
     default = ["frontend", "catalogue", "redis", "mongodb"]
 }
+
+variable "zone_id" {
+  default = "Z08643193QT2QCZFDKUI1"
+}
+
+variable "domain_name"{
+    default = "tcloudguru.in"
+}
