@@ -9,7 +9,6 @@ resource "aws_instance" "roboshop_instance" {
 
   tags = var.instance_tags
 
-
 }
 resource "aws_security_group" "allow-all" {
   name        = var.sg_name
