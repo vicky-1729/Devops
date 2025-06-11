@@ -9,3 +9,4 @@ locals {
   )
 }
 
+#we can assign the expression and funtions to that locals 
