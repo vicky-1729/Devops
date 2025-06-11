@@ -37,6 +37,6 @@ Your notes are clear and well-structured! Here’s a slightly refined and concis
 
 **Problem with Local State File**
 - Local state file works for a **single user**
-- In a team, each person’s local state can get out of sync
+- In a team, each person’s local state can  get out of sync
 - Can cause **duplicate resources or errors**
 - **Solution:** Use a remote backend (like S3) for shared state in teams
