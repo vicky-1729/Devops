@@ -2,11 +2,11 @@ provider "aws" {
   region = "us-east-1" # or your preferred region
 }
 resource "aws_instance" "roboshop_instance" {
-  for_each = toset(var.instances)
-  ami = var.ami_id
-  instance_type = var.instance_type
-  vpc_security_group_ids = [ aws_security_group.allow-all.id ]
-  tags = var.instance_tags
+  for_each               = var.instances
+  ami                    = var.ami_id
+  instance_type          = var.instance_type
+  vpc_security_group_ids = [aws_security_group.allow-all.id]
+  tags                   = var.instance_tags
 }
 resource "aws_security_group" "allow-all" {
   name        = var.sg_name
