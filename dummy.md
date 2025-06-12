@@ -109,46 +109,35 @@ Designation : DevOps Engineer
 Company    : TCS
 Experience  : 3.4 Years
 Designation : DevOps Engineer
-:large_orange_square: AWS & VPC
-What is VPC (Virtual Private Cloud)?
 
-How can you define a public and private subnet in a VPC?
+### AWS & VPC
+1. What is VPC (Virtual Private Cloud)?
+2. How can you define a public and private subnet in a VPC?
+3. How can an EC2 instance fetch data from the internet?
+4. How does a request from the application reach the internet?
+5. If Security Groups, NACLs, and NAT Gateways are restricted, how can you still connect and fetch data from S3?
+6. How can you manage access in a VPC?
+7. Difference between Security Group and NACL (Network ACL)?
 
-How can an EC2 instance fetch data from the internet?
+### Kubernetes (K8s)
+8. What is a Service in Kubernetes?
+9. How does a Kubernetes Service know which Pod to send traffic to?
+10. If you don’t set a Service in Kubernetes, how can a request still reach the app?
+11. What is a Load Balancer in Kubernetes?
+12. How does a request know how to reach the app if you configure Ingress?
+13. How can you deploy applications in Kubernetes using AWS (e.g., EKS)?
+14. If using EKS, how can one AWS service communicate with another AWS service?
 
-How does a request from the application reach the internet?
+### Shell Scripting
+15. Write a shell script to check if a file is empty or not.
+16. Write a shell script to check if multiple files (e.g., 10 files) are empty or not.
 
-If Security Groups, NACLs, and NAT Gateways are restricted, how can you still connect and fetch data from S3?
+### Docker
+17. How do you write a Docker file?
+18. How can you reduce the size of a Docker image created from a Docker file?
+19. What are the security concerns to consider while writing a Docker file?
+20. How would you utilize a Docker file in a CI/CD pipeline?
 
-How can you manage access in a VPC?
-
-Difference between Security Group and NACL (Network ACL)?
-:large_green_square: Kubernetes (K8s)
-What is a Service in Kubernetes?
-
-How does a Kubernetes Service know which Pod to send traffic to?
-
-If you don’t set a Service in Kubernetes, how can a request still reach the app?
-
-What is a Load Balancer in Kubernetes?
-
-How does a request know how to reach the app if you configure Ingress?
-
-How can you deploy applications in Kubernetes using AWS (e.g., EKS)?
-
-If using EKS, how can one AWS service communicate with another AWS service?
-:large_blue_square: Shell Scripting
-Write a shell script to check if a file is empty or not.
-
-Write a shell script to check if multiple files (e.g., 10 files) are empty or not.
-:large_yellow_square: Docker
-How do you write a Docker file?
-
-How can you reduce the size of a Docker image created from a Docker file?
-
-What are the security concerns to consider while writing a Docker file?
-
-How would you utilize a Docker file in a CI/CD pipeline?
 :large_green_circle: All the best for your next interview! You've got this! :+1:
 
 DevOps Interview Questions:
@@ -342,26 +331,45 @@ DevOps Interview Questions
 Hey team! Here’s a curated list of insightful DevOps interview questions to help assess candidates deeply on both tech and collaboration aspects.
 :wrench: Technical Mastery & Problem Solving
 1. How do you balance innovation with the need for system stability in a production environment?
+
 2. How do you prepare your systems and team for a major product launch?
+
 3. Tell me about a time when you identified a major risk early. What did you do about it?
+
 4. How do you approach designing a highly scalable and resilient infrastructure for an application expected to grow 10x in traffic?
+
 5. Describe a situation where you had to influence leadership (senior management) to invest in DevOps tooling or practices.
+
 6. Have you ever introduced SRE (Site Reliability Engineering) practices in a team? What challenges did you face?
+
 7. How do you ensure business continuity in case of a major cloud provider outage?
+
 8. Tell me about a difficult trade-off you had to make regarding security vs. speed of delivery.
+
 :rocket: Execution Under Pressure
+
 1. Can you describe a time when you had to manage a technical project with very tight deadlines? How did you ensure success?
+
 2. How would you manage a situation where developers frequently bypass DevOps processes for "urgent" releases?
+
 3. How do you design your incident management and escalation processes to be effective but not overwhelming?
+
 :handshake: Team Collaboration & Conflict Resolution
 1. How do you handle disagreements in architectural decisions within the team?
+
 2. What steps do you take to ensure cross-functional collaboration between DevOps, development, QA, and product teams?
+
 3. How do you promote a DevOps culture in a traditional enterprise setup where change resistance is high?
+
 4. How would you handle a team member who consistently resists adopting DevOps best practices?
+
 :chart_with_upwards_trend: Growth, Learning & Continuous Improvement
 1. How do you ensure that your team is continuously learning and adopting new technologies?
+
 2. How do you prioritize between fixing technical debt vs. delivering new business features?
+
 3. What’s your strategy for onboarding new team members into a complex DevOps environment?
+
 4. What KPIs (Key Performance Indicators) would you track to measure the success of your DevOps initiatives?
 
 DevOps Interview Questions
@@ -499,7 +507,7 @@ What is the purpose of the git clean command?
 𝙍𝒐𝙪𝒏𝙙 2 - 𝙏𝒆𝙘𝒉𝙣𝒊𝙘𝒂𝙡 𝙍𝒐𝙪𝒏𝐝 1
 𝑫𝙪𝒓𝙖𝒕𝙞𝒐𝙣 - 1 𝒉𝙤𝒖𝙧
 𝑫𝙚𝒔𝙞𝒈𝙣𝒂𝙩𝒊𝙤𝒏 - 𝘿𝒆𝙛𝑶𝙥𝒔 & 𝑪𝙡𝒐𝙪𝒅 𝑰𝙣𝒇𝙧𝒂𝙨𝒕𝙧𝒖𝙘𝒕𝙪𝒓𝙚 𝙀𝒏𝙜𝒊𝙣𝒆𝙚𝒓
-𝙀𝒙𝙥𝒆𝙧𝒊𝙚𝒏𝙘𝒆 - 2+𝒀𝙚𝒂𝙧𝒔
+𝙀𝒙𝙥𝒆𝙧𝒊𝙚𝙣𝙘𝒆 - 2+𝒀𝙚𝒂𝙧𝒔
 1. What types of 𝐭𝐚𝐬𝐤𝐬 were you working on?
 
 2. Do you have 𝐞𝐱𝐩𝐞𝐫𝐢𝐞𝐧𝐜𝐞 in creating a 𝐩𝐢𝐩𝐞𝐥𝐢𝐧𝐞?
@@ -526,8 +534,8 @@ What is the purpose of the git clean command?
 
 13. Cost wise it is less then why we don't keep all the files in 𝐆𝐥𝐚𝐜𝐢𝐞𝐫
 
-14. What if I have 1000 of file and cannot go through each and every file, we need to archive older files in my 𝐬𝟗 𝐛𝐮𝐜𝐤𝐞𝐭, when we move them to a different tier.
- After 6 months I don't need my file in 𝐬𝟓 𝐛𝐮𝐜𝐤𝐞𝐭, so after 6 months move to glacier and after one year it should get deleted automatically
+14. What if I have 1000 of file and cannot go through each and every file, we need to archive older files in my 𝐬𝟗 𝐛𝐮𝐜𝐭𝐞𝐭, when we move them to a different tier.
+ After 6 months I don't need my file in 𝐬𝟕 𝐛𝐮𝐜𝐭𝐞𝐭, so after 6 months move to glacier and after one year it should get deleted automatically
 
 15. What is autoscaling group
 
