@@ -5,8 +5,18 @@ resource "aws_instance" "roboshop_instance" {
   instance_type = var.instance_type
   vpc_security_group_ids = [ aws_security_group.allow-all.id ]
 
-  tags = var.instances[count.index]
+  tags = {
+   Name = var.instances[count.index]
+  }
 
+  provisioner "local-exec" {
+    command = "echo ${self.private_ip} >> inventory"
+    on_failure = continue
+  }
+  provisioner "local-exec"{
+    command = "echo 'instance is detsroyed' "
+    when = destroy
+  }
 }
 resource "aws_security_group" "allow-all" {
   name        = var.sg_name
