@@ -33,7 +33,7 @@ resource "aws_instance" "roboshop_instance" {
   provisioner "remote-exec"{
     when = destroy
     inline = [
-      "sudo systemctl nginx stop",
+      "sudo systemctl stop nginx"  
     ]
   }
 }
@@ -62,3 +62,51 @@ resource "aws_security_group" "allow-all" {
   }
 
 }
+
+
+
+
+# # Resource block for AWS EC2 instance
+# resource "aws_instance" "example" {
+#   ami           = "ami-123456"
+#   instance_type = "t2.micro"
+
+#   # SSH connection details for remote access
+#   connection {
+#     type     = "ssh"
+#     host     = self.public_ip
+#     user     = "ec2-user"
+#     password = "DevOps321"  # Note: Using passwords in code is not recommended for production
+#   }
+
+#   # Remote execution provisioner to install and start nginx
+#   provisioner "remote-exec" {
+#     inline = [
+#       "sudo dnf install nginx -y",
+#       "sudo systemctl start nginx"
+#     ]
+#   }
+
+#   # Local execution when instance is created
+#   provisioner "local-exec" {
+#     command = "echo Instance created"
+#   }
+
+#   # Remote execution to stop nginx when instance is destroyed
+#   provisioner "remote-exec" {
+#     when = destroy
+#     inline = [
+#       "sudo systemctl stop nginx"
+#     ]
+#   }
+
+#   # Local execution when instance is destroyed
+#   provisioner "local-exec" {
+#     when    = destroy
+#     command = "echo Instance destroyed"
+#   }
+# }
+
+
+
+
