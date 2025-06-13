@@ -41,50 +41,21 @@ resource "aws_security_group" "allow-all" {
   )
 }
 
-
-
-
-# # Resource block for AWS EC2 instance
-# resource "aws_instance" "example" {
-#   ami           = "ami-123456"
-#   instance_type = "t2.micro"
-
-#   # SSH connection details for remote access
-#   connection {
-#     type     = "ssh"
-#     host     = self.public_ip
-#     user     = "ec2-user"
-#     password = "DevOps321"  # Note: Using passwords in code is not recommended for production
-#   }
-
-#   # Remote execution provisioner to install and start nginx
-#   provisioner "remote-exec" {
-#     inline = [
-#       "sudo dnf install nginx -y",
-#       "sudo systemctl start nginx"
-#     ]
-#   }
-
-#   # Local execution when instance is created
-#   provisioner "local-exec" {
-#     command = "echo Instance created"
-#   }
-
-#   # Remote execution to stop nginx when instance is destroyed
-#   provisioner "remote-exec" {
-#     when = destroy
-#     inline = [
-#       "sudo systemctl stop nginx"
-#     ]
-#   }
-
-#   # Local execution when instance is destroyed
-#   provisioner "local-exec" {
-#     when    = destroy
-#     command = "echo Instance destroyed"
-#   }
-# }
-
-
-
-
+# ======================================================
+# Multi-Environment Terraform Commands:
+# ======================================================
+# terraform init -backend-config=prod/backend.tf
+# - Initializes Terraform with backend configuration specific to production environment
+# - Sets up where the state file will be stored (S3, local, etc.) based on prod settings
+#
+# terraform plan -var-file=prod/prod.tfvars 
+# - Creates an execution plan using production-specific variable values
+# - Shows what changes will be made to the infrastructure without applying them
+#
+# terraform apply -var-file=prod/prod.tfvars --auto-approve
+# - Applies the changes to create/update infrastructure using production configuration
+# - --auto-approve skips the confirmation prompt (use with caution)
+#
+# terraform destroy -var-file=prod/prod.tfvars --auto-approve
+# - Destroys all resources created by Terraform in the production environment
+# - --auto-approve skips the confirmation prompt (use with caution)
