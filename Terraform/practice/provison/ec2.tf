@@ -1,4 +1,3 @@
-
 resource "aws_instance" "roboshop_instance" {
   count = length(var.instances)
   ami = var.ami_id
@@ -16,6 +15,26 @@ resource "aws_instance" "roboshop_instance" {
   provisioner "local-exec"{
     command = "echo 'instance is detsroyed' "
     when = destroy
+  }
+  connection {
+       type        = "ssh"
+       host        = self.public_ip # Or a static IP
+       user        = "ec2-user"
+       password    = "DevOps321"
+
+     }
+
+  provisioner "remote-exec" {
+    inline = [
+     "sudo dnf install nginx -y",
+     "sudo systemctl start nginx"
+    ]
+  }
+  provisioner "remote-exec"{
+    when = destroy
+    inline = [
+      "sudo systemctl nginx stop",
+    ]
   }
 }
 resource "aws_security_group" "allow-all" {
