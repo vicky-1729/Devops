@@ -75,27 +75,7 @@ resource "aws_security_group" "allow-all" {
 # terraform.workspace
 # This allows us to dynamically set resources based on the environment
 # Example: instance_type = lookup(var.instance_type, terraform.workspace)
-# ======================================================
-# Folder Structure for Terraform Workspaces
-# ======================================================
-# mutli_infra_setup/
-#   └── workspaces/                # Root directory for workspace approach
-#       ├── .terraform/            # Terraform internal directory (generated)
-#       │   ├── environment        # Current workspace selection
-#       │   ├── providers/         # Provider plugins
-#       │   └── terraform.tfstate  # Tracks current workspace state
-#       ├── .terraform.lock.hcl    # Terraform dependency lock file
-#       ├── ec2.tf                 # EC2 resource definitions
-#       ├── provider.tf            # Provider configuration
-#       ├── variables.tf           # Variable declarations
-#       ├── terraform.tfstate.d/   # Generated after workspace creation
-#           ├── dev/               # Dev workspace state files
-#           │   └── terraform.tfstate
-#           ├── prod/              # Prod workspace state files
-#           │   └── terraform.tfstate
-#           └── qa/                # QA workspace state files
-#               └── terraform.tfstate
-#
+
 # When using workspaces:
 # - All configuration files are shared across environments
 # - Each workspace has its own state file in terraform.tfstate.d/<workspace_name>/
