@@ -4,32 +4,45 @@ resource "aws_instance" "roboshop_instance" {
   instance_type = var.instance_type
   vpc_security_group_ids = [ aws_security_group.allow-all.id ]
 
+  # Set a tag for the instance name using the corresponding value from instances list
   tags = {
    Name = var.instances[count.index]
   }
 
+  # LOCAL-EXEC PROVISIONER: Runs on the machine executing Terraform (not on the created resource)
+  # This adds the private IP of each created instance to an inventory file for later use (e.g., Ansible)
   provisioner "local-exec" {
     command = "echo ${self.private_ip} >> inventory"
-    on_failure = continue
+    # Continue deployment even if this command fails
+    on_failure = continue 
   }
+  
+  # LOCAL-EXEC PROVISIONER: Runs when the instance is destroyed
+  # Outputs a message when an instance is destroyed
   provisioner "local-exec"{
     command = "echo 'instance is detsroyed' "
     when = destroy
   }
+  
+  # CONNECTION BLOCK: Defines how Terraform connects to the instance for provisioning
   connection {
-       type        = "ssh"
-       host        = self.public_ip # Or a static IP
-       user        = "ec2-user"
-       password    = "DevOps321"
-
+       type        = "ssh"  # Connection type (SSH)
+       host        = self.public_ip  # Use the instance's public IP address
+       user        = "ec2-user"  # The user to connect as (depends on the AMI)
+       password    = "DevOps321"  # WARNING: Hardcoded credentials - use SSH keys for production!
      }
 
+  # REMOTE-EXEC PROVISIONER: Runs commands on the created EC2 instance
+  # Install and start Nginx web server on the created instance
   provisioner "remote-exec" {
     inline = [
      "sudo dnf install nginx -y",
      "sudo systemctl start nginx"
     ]
   }
+  
+  # REMOTE-EXEC PROVISIONER: Runs when the instance is destroyed
+  # Stop Nginx gracefully before destroying the instance
   provisioner "remote-exec"{
     when = destroy
     inline = [
