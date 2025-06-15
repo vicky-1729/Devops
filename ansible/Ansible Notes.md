@@ -1,37 +1,17 @@
-# <span style="color:#CD5C5C;display:block; text-align:center;">Ansible</span>
-
-## <span style="color:#Fj383">Topics</span>
-
-----------------------------------------
+# Ansible Notes
 
 ## What is Ansible?
-
-Ansible is a tool to automate the tasks like installing software, configuring servers, and deploying apps. It uses YAML files called playbooks. You don’t need to install any agent on your servers—Ansible connects over SSH and works agentless.
+**Ansible** is a tool to automate tasks like installing software, configuring servers, and deploying apps. It uses YAML files called **playbooks**. You don't need to install any agent on your servers—Ansible connects over SSH and works agentless.
 
 ---
 
 ## Pull vs Push Based Mechanism
-
-**Pull:**
-
-- Each server pulls updates from a central place (needs an agent on every server, like Puppet or Chef).
-- Server sends updates to clients (e.g., CM Server).
-- Needs agents on each node.
-- Runs on schedule (e.g., every 30 mins).
-
-**Push:**
-
-- You push updates from your laptop or control node to servers. Ansible works this way.
-- Clients request updates when needed (e.g., Ansible).
-- No agents required.
-- Uses SSH to connect and run tasks only when triggered.
-
-<img src="/Users/ja20465253/Desktop/test/Pasted Graphic 2.png" style="zoom:50%;" />
+- **Pull:** Each server pulls updates from a central place (needs an agent on every server, like Puppet or Chef).
+- **Push:** You push updates from your laptop or control node to servers. Ansible works this way—no agent needed, just SSH.
 
 ---
 
 ## XML vs JSON vs YAML
-
 - **XML:** Old, hard to read, lots of tags.
 - **JSON:** Better, used by many tools, but still not very human-friendly.
 - **YAML:** Super easy to read and write. Ansible uses YAML for all playbooks and config files.
@@ -39,21 +19,15 @@ Ansible is a tool to automate the tasks like installing software, configuring se
 ---
 
 ## Ansible Installation
-
 - On Ubuntu:
-
   ```sh
   sudo apt install ansible
   ```
-
 - On RHEL/CentOS:
-
   ```sh
   sudo dnf install ansible
   ```
-
 - You can also install with pip:
-
   ```sh
   pip install ansible
   ```
@@ -61,9 +35,7 @@ Ansible is a tool to automate the tasks like installing software, configuring se
 ---
 
 ## Ansible Modules
-
-Modules are like small programs Ansible uses to do activities (install, copy, start service, etc).
-
+**Modules** are like small programs Ansible uses to do activities (install, copy, start service, etc).
 - `package`: Install/remove packages (works for yum, apt, dnf, etc)
 - `service`: Start/stop/restart services
 - `ping`: Test connection to hosts
@@ -72,7 +44,6 @@ Modules are like small programs Ansible uses to do activities (install, copy, st
 - `debug`: Print messages for troubleshooting
 
 **Example:**
-
 ```yaml
 - name: Install a package
   ansible.builtin.package:
@@ -83,13 +54,9 @@ Modules are like small programs Ansible uses to do activities (install, copy, st
 ---
 
 ## Playbooks
-
-Playbooks are to-do lists for your servers with step-by-step instructions like "install this program" or "restart this service."
-They use simple YAML format and can include variables, conditions, and loops to make your automation smarter.
-Instead of doing repetitive tasks manually, you write it once in a playbook and let Ansible do the work across all your servers.
+**Playbooks** are YAML files with steps (tasks) to run on your servers. You can group tasks, use variables, loops, and conditions.
 
 **Example:**
-
 ```yaml
 - name: Install Apache
   hosts: webservers
@@ -100,7 +67,6 @@ Instead of doing repetitive tasks manually, you write it once in a playbook and 
         name: apache2
         state: present
 ```
-
 - `hosts:` tells Ansible which servers to run on.
 - `become: yes` means use sudo.
 - `tasks:` is a list of steps to run.
@@ -108,26 +74,21 @@ Instead of doing repetitive tasks manually, you write it once in a playbook and 
 ---
 
 ## Inventory
-
 A file with the list of servers you want to manage. You can use INI or YAML format.
 
 **Example:**
-
 ```ini
 [web]
 1.2.3.4 ansible_user=ec2-user
 ```
-
 - You can group servers and set variables per group or host.
 
 ---
 
 ## Variables in Ansible
-
-Variables let you reuse values. Define once, use everywhere. Makes playbooks flexible and DRY (Don’t Repeat Yourself).
+**Variables** let you reuse values. Define once, use everywhere. Makes playbooks flexible and DRY (Don't Repeat Yourself).
 
 **Example:**
-
 ```yaml
 vars:
   SCHOOL: "ZPHS High School"
@@ -140,7 +101,6 @@ tasks:
 ---
 
 ## Ways to Define Variables
-
 - In playbooks (vars)
 - In tasks
 - In separate files (vars_files)
@@ -148,7 +108,6 @@ tasks:
 - On the command line (`--extra-vars`)
 
 **Example:**
-
 ```yaml
 - name: Use vars from file
   vars_files:
@@ -161,8 +120,7 @@ tasks:
 
 ---
 
-## Variable Priority (Highest to Lowest)
-
+## Variable Precedence (Highest to Lowest)
 1. Command line
 2. Task
 3. File
@@ -173,11 +131,9 @@ tasks:
 ---
 
 ## Prompting for Variables
-
 Ask user for input when running playbook.
 
 **Example:**
-
 ```yaml
 vars_prompt:
   - name: "username"
@@ -188,87 +144,58 @@ vars_prompt:
 ---
 
 ## Loops and Conditionals
-
 - **Loop:** Run a task for each item in a list (install many packages, create users, etc).
-
   ```yaml
   - name: Install multiple packages
-      tasks:
-        - name: install software
-          become: true
-          ansible.builtin.package:
-            name: "{{ item.name }}"
-            state: "{{ item.state }}"
-          loop:
-            - { name: 'nginx', state: 'present' }
-            - { name: 'apache', state: 'absent' }
-            - { name: 'mysql', state: 'present' }
-            - { name: 'redis', state: 'absent' }
+    ansible.builtin.apt:
+      name: "{{ item }}"
+      state: present
+    loop:
+      - git
+      - curl
+      - vim
   ```
-
 - **When:** Run a task only if a condition is true (like if OS is Ubuntu).
-
-  > [!NOTE]
-  >
-  > Syntax: **when**
-
   ```yaml
-      tasks:
-      - name: Show if the number is positive
-        debug:
-          msg: "The number {{ number }} is positive."
-        when: number | int > 0
-  
-      - name: Show if the number is negative
-        debug:
-          msg: "The number {{ number }} is negative."
-        when: number | int < 0
+  - name: Only run on Ubuntu
+    ansible.builtin.debug:
+      msg: "This is Ubuntu"
+    when: ansible_facts['os_family'] == "Debian"
   ```
 
 ---
 
 ## Useful Commands
-
 - Run playbook:
-
   ```sh
   ansible-playbook playbook.yml
   ```
-
 - Ping all hosts:
-
   ```sh
   ansible all -m ping -i inventory
   ```
-
 - Check syntax:
-
   ```sh
   ansible-playbook playbook.yml --syntax-check
   ```
 
 ---
 
-> [!TIP]
->
-> - Use `become: yes` for sudo.
-> - Indentation matters in YAML! 
-> - Use variables to avoid repeating values.
-> - Use handlers to restart services only when needed.
+## Tips
+- Use `become: yes` for sudo.
+- Indentation matters in YAML! (Always use spaces, not tabs)
+- Use variables to avoid repeating values.
+- Use handlers to restart services only when needed.
 
 ---
 
 ## Shell vs Command Modules
-
 - **shell:** Use for commands with pipes, redirection, or shell features.
-
   ```yaml
   - name: Use shell with pipe
     ansible.builtin.shell: "cat /etc/passwd | grep root"
   ```
-
 - **command:** Use for simple commands (safer, no shell features).
-
   ```yaml
   - name: Use command
     ansible.builtin.command: "ls -l /tmp"
@@ -277,11 +204,9 @@ vars_prompt:
 ---
 
 ## Register in Ansible
-
 Capture output of a task to use later.
 
 **Example:**
-
 ```yaml
 - name: Check disk space
   command: df -h
@@ -294,11 +219,9 @@ Capture output of a task to use later.
 ---
 
 ## Ansible Playbook: Functions and Filters
-
 - Use filters like `default`, `split`, `dict2items`, `items2dict`, `upper`, `lower` to work with variables and data.
 
 **Example:**
-
 ```yaml
 - name: Use default filter
   ansible.builtin.debug:
@@ -308,11 +231,9 @@ Capture output of a task to use later.
 ---
 
 ## Ansible Tags
-
-Tags will  run only certain parts of your playbook. Good for big playbooks or when you want to run only setup or deploy steps.
+**Tags** let you run only certain parts of your playbook. Good for big playbooks or when you want to run only setup or deploy steps.
 
 **Example:**
-
 ```yaml
 - name: Install Apache
   tags: setup
@@ -320,9 +241,7 @@ Tags will  run only certain parts of your playbook. Good for big playbooks or wh
     name: apache2
     state: present
 ```
-
 Run with:
-
 ```sh
 ansible-playbook playbook.yml --tags "setup"
 ```
@@ -330,104 +249,53 @@ ansible-playbook playbook.yml --tags "setup"
 ---
 
 ## Including Other Roles
-
-- **include_role:** 
-
-  - Adds a role at runtime (dynamic inclusion)
-  - Includes the role's tasks at runtime
-  - Validation happens at runtime (not before playbook execution)
-  - Tags and when conditions apply only to the include_role statement, not to the tasks inside the role
-  - More flexible but slightly slower
-
+- **include_role:** Adds a role at runtime. Tags/when apply only to the include statement.
   ```yaml
   - name: Include a role
     include_role:
       name: myrole
   ```
-
-- **import_role:** 
-
-  * Adds a role before running (static inclusion)
-
-  * Includes and validates the role and its tasks before playbook execution (at parse time)
-
-  * Tags and when conditions apply to both the import_role statement and all tasks within the role
-
-  * Faster execution but less flexible
-
+- **import_role:** Adds a role before running. Tags/when apply to all tasks in the role.
   ```yaml
   - name: Import a role
     import_role:
       name: myrole
   ```
-
-- Roles help you organize code and reuse logic for different servers or projects.
-
-  #### Key Differences:
-
-  - **Execution time:** import_role processes during playbook parsing (before execution), include_role processes during playbook execution
-  - **Conditional application:** import_role applies conditions to all tasks in the role
-  - **Variable usage:** include_role can use variables defined later in the playbook
-  - **Dynamic paths:** include_role can use variables in the role path/name
-
-  #### Best Practice:
-
-  - Use import_role for roles that should always run and need consistent tagging
-  - Use include_role for conditional role inclusion or when you need to use runtime variables
+- **Roles** help you organize code and reuse logic for different servers or projects.
 
 ---
 
 ## Background Commands
-
 - `&` : Run in background, stops if terminal closes.
 - `nohup <command> &` : Run in background, keeps running after terminal closes.
 - Use `tail -f <logfile>` to watch logs live.
 
 **Example:**
-
 ```sh
 nohup python myscript.py &
-tail -f /var/log/syslog # live logs 
-
-nohup ansible-playbook -i roboshop.ini frontend.yml  &>> /home/ec2-user/frontend.log &
-output checking:
-tail -f /home/ec2-user/frontend.log  # live logs
-
+tail -f /var/log/syslog
 ```
 
 ---
 
 ## Ansible Roles
-
-Roles are a proper directory structure to write Ansible playbooks. We can reuse roles, which follows the **DRY** (Don't Repeat Yourself) principle.
-
-### Key Directories Explained
-
-- **tasks**: Contains the main tasks for the role (the steps to be executed).
-
-- **files**: Store all static files required by the role here.
-
-- **templates**: Store all template files (with Jinja2 placeholders) here. These files can use variables that are replaced at runtime.
-
-- **vars**: Contains all variables required for the role.
-
-- **handlers**: Handlers are notifiers in Ansible. When there is a change in something, if you want to notify another task, we can use handlers. For example, a change in nginx configuration can notify the "restart nginx" task in handlers.
-
-- **defaults**: Default variables with the lowest precedence (easily overridden).
-
-- **meta**: Contains role metadata including dependencies.
+**Roles** are folders with a standard structure to organize your playbooks and make them reusable.
+- `tasks/` : Main steps
+- `files/` : Static files
+- `templates/` : Jinja2 templates (with variables)
+- `vars/` : Variables
+- `handlers/` : Notifiers (e.g., restart service)
+- `defaults/` : Default variables
+- `meta/` : Role dependencies
 
 **Example structure:**
-
 ```
 myrole/
   tasks/
-    main.yml
   files/
   templates/
   vars/
   handlers/
-    main.yml
   defaults/
   meta/
 ```
@@ -435,37 +303,32 @@ myrole/
 ---
 
 ## Ansible Templates
-
 - **template:** For files with variables (Jinja2). Values are filled in at runtime.
-
   ```yaml
   - name: Deploy config from template
     ansible.builtin.template:
       src: nginx.conf.j2
       dest: /etc/nginx/nginx.conf
   ```
-
 - **file:** For static files. Copied as-is.
-
   ```yaml
   - name: Copy static file
     ansible.builtin.copy:
       src: myfile.txt
       dest: /tmp/myfile.txt
   ```
-
 - Templates are great for config files that change per environment.
 
 ---
 
 ## Ansible Error Handling
 
-Error handling means what should we do when error comes, what should we do when error not comes.
+Ansible lets you control what happens when a task fails. Here are the main ways to handle errors:
 
-If we are able to handle the error, we can keep ignore_errors true and then execute another task in case of failure.
+- Use **`ignore_errors: true`** to skip errors and keep going to the next task.
+- Use **`block`**, **`rescue`**, and **`always`** for more control and to handle errors cleanly.
 
 **ignore_errors Example:**
-
 ```yaml
 - name: Try to restart nginx
   ansible.builtin.service:
@@ -479,7 +342,6 @@ If we are able to handle the error, we can keep ignore_errors true and then exec
 ```
 
 **block, rescue, always Example:**
-
 ```yaml
 - name: Handle nginx restart with error handling
   block:
@@ -499,7 +361,6 @@ If we are able to handle the error, we can keep ignore_errors true and then exec
 
 - **register + when:**  
   Capture the result of a task and use a condition to run another task only if the previous one failed.
-
   ```yaml
   - name: Try to restart nginx
     ansible.builtin.service:
@@ -507,7 +368,7 @@ If we are able to handle the error, we can keep ignore_errors true and then exec
       state: restarted
     register: nginx_result
     ignore_errors: true
-  
+
   - name: Print message if previous task failed
     ansible.builtin.debug:
       msg: "Nginx restart failed, but moving on."
@@ -516,7 +377,6 @@ If we are able to handle the error, we can keep ignore_errors true and then exec
 
 - **failed_when:**  
   Mark a task as failed based on your own condition, even if the command itself did not fail.
-
   ```yaml
   - name: Check if file exists
     ansible.builtin.stat:
@@ -527,7 +387,6 @@ If we are able to handle the error, we can keep ignore_errors true and then exec
 
 - **any_errors_fatal:**  
   If set to true at play or block level, any error will stop the play for all hosts.
-
   ```yaml
   - hosts: all
     any_errors_fatal: true
@@ -537,7 +396,6 @@ If we are able to handle the error, we can keep ignore_errors true and then exec
   ```
 
 **Summary:**  
-
 - `ignore_errors` lets you skip failed tasks.
 - `block`, `rescue`, `always` give you more control to handle errors and run cleanup steps.
 - `register` and `when` let you react to task results.
@@ -547,68 +405,49 @@ If we are able to handle the error, we can keep ignore_errors true and then exec
 ---
 
 ## Vault and Secrets Management
-
-Vault means: Keep your secrets (like passwords) in a file and encrypt it.
+**Vault means**: Keep your secrets (like passwords) in a file and encrypt it.
 
 ### Ansible Vault
-
-- Ansible Vault lets you encrypt files or variables in Ansible.
+- **Ansible Vault** lets you encrypt files or variables in Ansible.
 - You can use it to keep your secrets safe in your playbooks.
 
 **Commands:**
-
 - Create encrypted file:
-
   ```sh
   ansible-vault create secrets.yml
   ```
-
 - View encrypted file:
-
   ```sh
   ansible-vault view secrets.yml
   ```
-
 - Edit encrypted file:
-
   ```sh
   ansible-vault edit secrets.yml
   ```
-
 - Encrypt existing file:
-
   ```sh
   ansible-vault encrypt vars.yml
   ```
-
 - Decrypt file:
-
   ```sh
   ansible-vault decrypt secrets.yml
   ```
-
 - Use vault in playbook:
-
   ```sh
   ansible-playbook site.yml --ask-vault-pass
   # or
   ansible-playbook site.yml --vault-password-file ~/.vault_pass.txt
   ```
 
-## AWS SSM Parameter Store
-
+### AWS SSM Parameter Store
 - Cloud service to keep secrets safe. No need to manage files or keys. AWS takes care of it.
-
 - You can get secrets from SSM Parameter Store using the `aws_ssm` lookup in your playbook.
-
   ```yaml
   vars:
     db_password: "{{ lookup('aws_ssm', '/prod/db/password', region='us-east-1') }}"
   ```
-
 - SSM is better for big teams or cloud setups—no need to share vault passwords.
 
 **Summary:**
-
-- Use Ansible Vault for simple/small setups.
-- Use AWS SSM Parameter Store for cloud, big teams, or easy/secure secret management.
+- Use **Ansible Vault** for simple/small setups.
+- Use **AWS SSM Parameter Store** for cloud, big teams, or easy/secure secret management.

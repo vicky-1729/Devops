@@ -1,4 +1,4 @@
-# Ansible Collections vs Plugins
+<span style="color:blue">Ansible Collections vs Plugins</span>
 
 #### **Ansible Collections**
 
