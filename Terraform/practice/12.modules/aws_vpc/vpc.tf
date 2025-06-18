@@ -13,6 +13,7 @@ resource "aws_internet_gateway" "main" {
   vpc_id = aws_vpc.main.id # IGW directly added to the vpc
 
   tags = merge(
+    var.igw_tags,
     local.common_tags,{
         Name = "${var.project}-${var.env}"
 
@@ -27,6 +28,7 @@ resource "aws_subnet" "public" {
   availability_zone = local.az_zones[count.index]
   map_public_ip_on_launch = "true"
   tags = merge(
+    var.public_tags,
     local.common_tags,
     {
         Name = "${var.project}-${var.env}-public-${local.az_zones[count.index]}"
@@ -43,7 +45,8 @@ resource "aws_subnet" "private" {
   availability_zone = local.az_zones[count.index]
 
   tags = merge(
-   local.common_tags{
+    var.private_tags
+   local.common_tags,{
     Name = "${var.project}-${var.env}-private-${local.az_zones[count.index]}"
   })
 }
@@ -57,7 +60,8 @@ resource "aws_subnet" "db" {
   availability_zone = local.az_zones[count.index]
 
   tags = merge(
-   local.common_tags{
+   var.db_tags,
+   local.common_tags,{
     Name = "${var.project}-${var.env}-db-${local.az_zones[count.index]}"
   })
 }

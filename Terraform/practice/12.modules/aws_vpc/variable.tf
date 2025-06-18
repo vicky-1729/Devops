@@ -17,3 +17,19 @@ variable private_subnet_cidr{
 variable db_subnet_cidr{
     type = list(string)
 }
+variable "igw_tags"{
+    type = map(string)
+    default = {}
+}
+variable "private_tags"{
+    type = map(string)
+    default={}
+}
+variable "public_tags"{
+    type = map(string)
+    default={}
+}
+variable "db_tags"{
+    type = map(string)
+    default={}
+}
