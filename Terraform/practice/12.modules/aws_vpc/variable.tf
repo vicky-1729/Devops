@@ -22,14 +22,34 @@ variable "igw_tags"{
     default = {}
 }
 variable "private_tags"{
-    type = map(string)
-    default={}
+    type = map(string) #it is mandotroy
+    default={} # now it is optional
 }
 variable "public_tags"{
     type = map(string)
     default={}
 }
 variable "db_tags"{
+    type = map(string)
+    default={}
+}
+variable "eip_tags"{
+    type = map(string)
+    default={}
+}
+variable "natgateway_tags"{
+    type = map(string)
+    default={}
+}
+variable "public_route_tags"{
+    type = map(string)
+    default={}
+}
+variable "private_route_tags"{
+    type = map(string)
+    default={}
+}
+variable "db_route_tags"{
     type = map(string)
     default={}
 }
