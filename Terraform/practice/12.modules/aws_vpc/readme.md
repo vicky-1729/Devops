@@ -1,6 +1,6 @@
 # AWS VPC Terraform Module
 
-A Terraform module to create an AWS Virtual Private Cloud (VPC) with customizable public, private, and database subnets across multiple availability zones.
+A Terraform module to create an AWS Virtual Private Cloud (VPC) with customizable public, private, and database subnets across multiple availability zones. Supports VPC peering with the default VPC for cross-VPC communication.
 
 ## Features
 
@@ -10,6 +10,7 @@ A Terraform module to create an AWS Virtual Private Cloud (VPC) with customizabl
 - Configures NAT Gateway for private subnet outbound internet access
 - Creates appropriate route tables and routes for each subnet tier
 - Applies consistent tagging across all resources
+- **Supports VPC Peering** with the default VPC (optional)
 
 ## Usage
 
@@ -37,8 +38,28 @@ module "vpc" {
   db_tags = {
     Tier = "Database"
   }
+
+  # Optional: enable VPC peering with default VPC
+  is_peering_requried = true
+  vpc_peering_tags = {
+    Purpose = "Peering with default VPC"
+  }
 }
 ```
+
+## VPC Peering
+
+This module can optionally create a VPC peering connection between your custom VPC and the AWS default VPC. When enabled, it:
+- Creates a peering connection
+- Adds routes in all relevant route tables for cross-VPC communication
+- Enables DNS resolution across VPCs
+
+**To enable peering:**
+- Set `is_peering_requried = true` in your module block
+- Optionally, provide `vpc_peering_tags` for tagging the peering connection
+
+**Use case:**
+- Allow resources in your custom VPC to communicate with resources in the default VPC (and vice versa)
 
 ## Requirements
 
@@ -66,6 +87,8 @@ module "vpc" {
 | public_route_tags | Additional tags for public route table | `map(string)` | `{}` | no |
 | private_route_tags | Additional tags for private route table | `map(string)` | `{}` | no |
 | db_route_tags | Additional tags for database route table | `map(string)` | `{}` | no |
+| is_peering_requried | Enable VPC peering with default VPC | `bool` | `false` | no |
+| vpc_peering_tags | Additional tags for VPC peering connection | `map(string)` | `{}` | no |
 
 ## Architecture
 
@@ -82,6 +105,7 @@ This module creates the following resources:
 9. **Routes** for internet access:
    - Public subnets via Internet Gateway
    - Private and database subnets via NAT Gateway
+10. **(Optional) VPC Peering** with default VPC and all required routes
 
 ## Resource Naming Convention
 
