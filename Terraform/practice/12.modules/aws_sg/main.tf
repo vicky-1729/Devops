@@ -1,7 +1,7 @@
 resource "aws_security_group" "sg" {
   name        = var.sg_name
   description = var.sg_des
-  vpc_id      = 
+  vpc_id      = var.vpc_id
   tags = merge(
     var.sg_tags,
     local.common_tags,
