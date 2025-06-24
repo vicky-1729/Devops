@@ -1,13 +1,13 @@
 # Input variables for security group configuration
-variable "sg_name"{
+variable "frontend_sg_name"{
     type= string
     description = "security group name"
-    default = "security_group"
+    default = "frontend_security_group"
 }
-variable "sg_desc"{
+variable "frontend_sg_desc"{
     type= string
     description = "security group for roboshop project"
-    default = "security group for roboshop project"
+    default = "security group for roboshop project frontend"
 }
 variable "environment"{
     type = string
@@ -17,9 +17,9 @@ variable "project"{
     type = string
     default = "roboshop"
 }
-variable "sg_tags"{
+variable "frontend_sg_tags"{
     type = map(string)
     default= {
-        sg_tags = "roboshop-dev-security-groups"
+        sg_tags = "roboshop-dev-frontend"
     }
 }
