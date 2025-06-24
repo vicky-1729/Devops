@@ -1,5 +1,5 @@
 variable "instance_type"{
-    type = "string"
+    type = string
     default="t3.micro"
 }
 
@@ -16,3 +16,4 @@ variable "instance_tags"{
     default= {
         instance_tags = "roboshop-dev-bastion"
     }
+}

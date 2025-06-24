@@ -1,26 +1,6 @@
 locals {
-   
-    data "aws_ami" "joindevops" {
-    owners           = ["973714476881"]
-    most_recent      = true
-
-    filter {
-        name   = "name"
-        values = ["RHEL-9-DevOps-Practice"]
-    }
-
-    filter {
-        name   = "root-device-type"
-        values = ["ebs"]
-    }
-
-    filter {
-        name   = "virtualization-type"
-        values = ["hvm"]
-    }
-    }
-
-    bastion_sg_id= data.aws_ssm_parameter.bastion_sg_id
+    aws_ami = data.aws_ami.joindevops.id
+    bastion_sg_id= [data.aws_ssm_parameter.bastion_sg_id.value]
     
     common_tags={
         project = "roboshop"
