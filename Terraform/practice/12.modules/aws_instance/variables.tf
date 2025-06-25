@@ -1,12 +1,15 @@
 variable instance_tags{
-    type = map
+    type = map(string)
 }
 variable sg_ids {
-    type = list 
+    type = list(string)
 }
 variable instance_type{
-    default = "t2.micro"
+    #default = "t2.micro"
 }
 variable ami{
-    default = "ami-09c813fb71547fc4f"
+    #default = "ami-09c813fb71547fc4f"
+}
+variable "subnet_id"{
+   # default
 }
