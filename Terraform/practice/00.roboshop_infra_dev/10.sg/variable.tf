@@ -17,12 +17,6 @@ variable "project"{
     type = string
     default = "roboshop"
 }
-variable "frontend_sg_tags"{
-    type = map(string)
-    default= {
-        sg_tags = "roboshop-dev-frontend"
-    }
-}
 
 
 
@@ -38,9 +32,3 @@ variable "bastion_sg_desc"{
     default = "security group for roboshop project bastion"
 }
 
-variable "bastion_sg_tags"{
-    type = map(string)
-    default= {
-        sg_tags = "roboshop-dev-bastion"
-    }
-}

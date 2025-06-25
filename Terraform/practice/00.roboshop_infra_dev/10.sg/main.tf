@@ -9,7 +9,7 @@ module "frontend_sg" {
     vpc_id = local.vpc_id
     sg_name = var.frontend_sg_name
     sg_desc = var.frontend_sg_desc
-    sg_tags= var.frontend_sg_tags
+   
 }
 
 module "bastion_sg" {
@@ -21,5 +21,5 @@ module "bastion_sg" {
     vpc_id = local.vpc_id
     sg_name = var.bastion_sg_name
     sg_desc = var.bastion_sg_desc
-    sg_tags= var.bastion_sg_tags
+    
 }
