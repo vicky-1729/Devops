@@ -5,6 +5,8 @@ module "bastion"{
     ami = local.aws_ami
     instance_type = var.instance_type
     sg_ids = local.bastion_sg_id
+    subnet_id = local.public_subnet_id
+    
     instance_tags = merge(
         var.instance_tags,
         local.common_tags,{
