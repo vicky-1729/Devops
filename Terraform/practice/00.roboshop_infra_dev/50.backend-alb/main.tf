@@ -12,7 +12,6 @@ module "backend_alb" {
 
   # ALB Configuration
   internal = true  # Since it's in private subnets
-
   tags = merge(
     local.common_tags,
     {
