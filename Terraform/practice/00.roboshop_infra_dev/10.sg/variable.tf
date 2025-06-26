@@ -1,42 +1,48 @@
 # Input variables for security group configuration
-variable "environment"{
-    type = string
-    default = "dev"
-}
-variable "project"{
-    type = string
-    default = "roboshop"
+variable "environment" {
+    type        = string
+    description = "Environment name (dev, prod, staging)"
+    default     = "dev"
 }
 
-variable "frontend_sg_name"{
-    type= string
-    description = "security group name"
-    default = "frontend_security_group"
-}
-variable "frontend_sg_desc"{
-    type= string
-    description = "security group for roboshop project"
-    default = "security group for roboshop project frontend"
+variable "project" {
+    type        = string
+    description = "Project name for resource naming and tagging"
+    default     = "roboshop"
 }
 
-variable "bastion_sg_name"{
-    type= string
-    description = "security group name"
-    default = "bastion_security_group"
-}
-variable "bastion_sg_desc"{
-    type= string
-    description = "security group for roboshop project"
-    default = "security group for roboshop project bastion"
+variable "frontend_sg_name" {
+    type        = string
+    description = "Name for the frontend security group"
+    default     = "frontend"
 }
 
-variable "backend_alb_sg_name"{
-    type= string
-    description = "security group name"
-    default = "backend_alb_security_group"
+variable "frontend_sg_desc" {
+    type        = string
+    description = "Description for the frontend security group"
+    default     = "Security group for RoboShop frontend servers"
 }
-variable "backend_alb_sg_desc"{
-    type= string
-    description = "security group for roboshop project"
-    default = "security group for roboshop project backend load balancer"
+
+variable "bastion_sg_name" {
+    type        = string
+    description = "Name for the bastion host security group"
+    default     = "bastion"
+}
+
+variable "bastion_sg_desc" {
+    type        = string
+    description = "Description for the bastion host security group"
+    default     = "Security group for RoboShop bastion host"
+}
+
+variable "backend_alb_sg_name" {
+    type        = string
+    description = "Name for the backend ALB security group"
+    default     = "backend-alb"
+}
+
+variable "backend_alb_sg_desc" {
+    type        = string
+    description = "Description for the backend ALB security group"
+    default     = "Security group for RoboShop backend load balancer"
 }
