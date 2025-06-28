@@ -43,21 +43,53 @@ variable "igw_tags" {
     description = "Additional tags for Internet Gateway"
     default     = {}
 }
+variable "ngw_tags" {
+    type        = map(string)
+    description = "Additional tags for NAT Gateway"
+    default     = {}
+}
 
 variable "eip_tags" {
     type        = map(string)
     description = "Additional tags for Elastic IP"
     default     = {}
 }
-variable "public_tags"{
-    type = map(string) #it is mandotroy
-    default={} # now it is optional
+
+# Route Table Tags Variables
+variable "public_route_tags" {
+    type        = map(string)
+    description = "Additional tags for public route table"
+    default     = {}
 }
-variable "private_tags"{
-    type = map(string) #it is mandotroy
-    default={} # now it is optional
+
+variable "private_route_tags" {
+    type        = map(string)
+    description = "Additional tags for private route table"
+    default     = {}
 }
-variable "db_tags"{
-    type = map(string) #it is mandotroy
-    default={} # now it is optional
+
+variable "db_route_tags" {
+    type        = map(string)
+    description = "Additional tags for database route table"
+    default     = {}
 }
+
+# Subnet Tags Variables
+variable "public_tags" {
+    type        = map(string)
+    description = "Additional tags for public subnets"
+    default     = {}
+}
+
+variable "private_tags" {
+    type        = map(string)
+    description = "Additional tags for private subnets"
+    default     = {}
+}
+
+variable "db_tags" {
+    type        = map(string)
+    description = "Additional tags for database subnets"
+    default     = {}
+}
+
