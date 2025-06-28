@@ -43,6 +43,17 @@ variable "backend_alb_sg_name" {
 
 variable "backend_alb_sg_desc" {
     type        = string
-    description = "Description for the backend ALB security group"
+    description = "Description for the VPN security group"
     default     = "Security group for RoboShop backend load balancer"
+}
+variable "vpn_sg_name" {
+    type        = string
+    description = "Name for the VPN security group"
+    default     = "roboshop-dev-vpn"
+}
+
+variable "vpn_sg_desc" {
+    type        = string
+    description = "Description for the VPN security group"
+    default     = "Security group for RoboShop dev VPN"
 }
