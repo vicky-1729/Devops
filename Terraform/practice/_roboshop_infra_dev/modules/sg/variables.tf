@@ -1,5 +1,3 @@
-
-
 # Project and Environment Variables
 variable "project" {
     type        = string
@@ -10,3 +8,22 @@ variable "environment" {
     type        = string
     description = "Environment name (dev, staging, prod)"
 }
+
+# Security Group Configuration Variables
+variable "sg_name" {
+    type        = string
+    description = "Name for the security group (will be prefixed with project-environment)"
+}
+
+variable "sg_desc" {
+    type        = string
+    description = "Description for the security group"
+}
+
+# Optional Tags Variables
+variable "sg_tags" {
+    type        = map(string)
+    description = "Additional tags for the security group"
+    default     = {}
+}
+
