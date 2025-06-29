@@ -5,12 +5,12 @@ module "frontend"{
   # Required Variables
   project     = var.project
   environment = var.environment
-  sg_name     = var.sg_name
-  sg_desc     = var.sg_desc
+  sg_name     = var.frontend_sg_name
+  sg_desc     = var.frontend_sg_desc
   
   # Optional Custom Tags
   sg_tags = {
-    Name = "${var.project}-${var.environment}-${var.sg_name}"
+    Name = "${var.project}-${var.environment}-${var.frontend_sg_name}"
   }
 }
 resource "aws_security_group_rule" "frontend_ssh" {
@@ -20,4 +20,27 @@ resource "aws_security_group_rule" "frontend_ssh" {
   protocol          = "tcp"
   cidr_blocks       = ["0.0.0.0/0"]
   security_group_id = module.frontend.sg_id
+}
+module "bastion"{
+    source = "../modules/sg"
+    # input variables
+
+  # Required Variables
+  project     = var.project
+  environment = var.environment
+  sg_name     = var.bastion_sg_name
+  sg_desc     = var.bastion_sg_desc
+  
+  # Optional Custom Tags
+  sg_tags = {
+    Name = "${var.project}-${var.environment}-${var.bastion_sg_name}"
+  }
+}
+resource "aws_security_group_rule" "bastion_ssh" {
+  type              = "ingress"
+  from_port         = 22
+  to_port           = 22
+  protocol          = "tcp"
+  cidr_blocks       = ["0.0.0.0/0"]
+  security_group_id = module.bastion.sg_id
 }
