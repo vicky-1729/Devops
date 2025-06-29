@@ -43,7 +43,7 @@ variable "vpc_tags" {
     description = "Additional tags for VPC"
     default = {
         project       = "roboshop_local"
-        Environment = "Development"
+        Environment = "DEV"
     }
 }
 

@@ -35,7 +35,7 @@ variable "environment" {
 variable "vpc_tags" {
     type        = map(string)
     description = "Additional tags for VPC"
-    default     = {}
+    default     = {} 
 }
 
 variable "igw_tags" {
