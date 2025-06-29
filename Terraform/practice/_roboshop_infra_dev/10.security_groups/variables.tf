@@ -47,6 +47,18 @@ variable "backend_alb_sg_desc" {
     description = "Description for the security group"
     default = "backend security group"
 }
+# Security Group Configuration Variables
+variable "vpn_sg_name" {
+    type        = string
+    description = "Name for the security group"
+    default = "vpn_security_group"
+}
+
+variable "vpn_sg_desc" {
+    type        = string
+    description = "Description for the security group"
+    default = "vpn security group"
+}
 
 
 

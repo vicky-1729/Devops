@@ -13,3 +13,7 @@ output "backend_alb_sg_id" {
     description = "ID of the backend ALB security group"
     value       = module.backend_alb.sg_id
 }
+output "vpn_sg_id" {
+    description = "ID of the backend ALB security group"
+    value       = module.vpn.sg_id
+}
