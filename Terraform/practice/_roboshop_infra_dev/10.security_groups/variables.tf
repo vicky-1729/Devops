@@ -35,6 +35,18 @@ variable "bastion_sg_desc" {
     description = "Description for the security group"
     default = "bastion security group"
 }
+# Security Group Configuration Variables
+variable "backend_alb_sg_name" {
+    type        = string
+    description = "Name for the security group"
+    default = "backend_alb_sg"
+}
+
+variable "backend_alb_sg_desc" {
+    type        = string
+    description = "Description for the security group"
+    default = "backend security group"
+}
 
 
 

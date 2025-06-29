@@ -9,6 +9,12 @@ variable "environment" {
     description = "Environment name (dev, staging, prod)"
 }
 
+# VPC Configuration
+variable "vpc_id" {
+    type        = string
+    description = "VPC ID where the security group will be created"
+}
+
 # Security Group Configuration Variables
 variable "sg_name" {
     type        = string
