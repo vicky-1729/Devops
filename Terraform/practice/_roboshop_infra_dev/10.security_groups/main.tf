@@ -62,6 +62,35 @@ module "mongodb"{
    sg_name     = var.mongodb_sg_name
    sg_desc     = var.mongodb_sg_desc
 }
+
+module "redis"{
+  source = "../modules/sg"
+
+  vpc_id = local.vpc_id
+  project = var.project
+  environment = var.environment 
+  sg_name     = var.redis_sg_name
+  sg_desc     = var.redis_sg_desc
+}
+module "mysql"{
+  source = "../modules/sg"
+
+  vpc_id = local.vpc_id
+  project = var.project
+  environment = var.environment 
+  sg_name     = var.mysql_sg_name
+  sg_desc     = var.mysql_sg_desc
+}
+module "rabbitmq"{
+  source = "../modules/sg"
+
+  vpc_id = local.vpc_id
+  project = var.project
+  environment = var.environment 
+  sg_name     = var.rabbitmq_sg_name
+  sg_desc     = var.rabbitmq_sg_desc
+}
+
 # Security Group Rules Section
 # ===========================
 
@@ -192,4 +221,75 @@ resource "aws_security_group_rule" "mongodb_from_bastion" {
   protocol                 = "tcp"
   source_security_group_id = module.bastion.sg_id # Source via bastion sg_id
   security_group_id        = module.mongodb.sg_id # Destination
+}
+
+# mysql Security Group Rules
+# =============================
+
+
+resource "aws_security_group_rule" "mysql_from_vpn" {
+  count                    = length(var.mysql_inbound_ports)
+  type                     = "ingress"
+  from_port                = var.mysql_inbound_ports[count.index]
+  to_port                  = var.mysql_inbound_ports[count.index]
+  protocol                 = "tcp"
+  source_security_group_id = module.vpn.sg_id # Source via VPN sg_id
+  security_group_id        = module.mysql.sg_id # Destination
+}
+
+
+resource "aws_security_group_rule" "mysql_from_bastion" {
+  count                    = length(var.mysql_inbound_ports)
+  type                     = "ingress"
+  from_port                = var.mysql_inbound_ports[count.index]
+  to_port                  = var.mysql_inbound_ports[count.index]
+  protocol                 = "tcp"
+  source_security_group_id = module.bastion.sg_id # Source via bastion sg_id
+  security_group_id        = module.mysql.sg_id # Destination
+}
+# rabbitmq Security Group Rules
+# =============================
+
+resource "aws_security_group_rule" "rabbitmq_from_vpn" {
+  count                    = length(var.rabbitmq_inbound_ports)
+  type                     = "ingress"
+  from_port                = var.rabbitmq_inbound_ports[count.index]
+  to_port                  = var.rabbitmq_inbound_ports[count.index]
+  protocol                 = "tcp"
+  source_security_group_id = module.vpn.sg_id # Source via VPN sg_id
+  security_group_id        = module.rabbitmq.sg_id # Destination
+}
+
+
+resource "aws_security_group_rule" "rabbitmq_from_bastion" {
+  count                    = length(var.rabbitmq_inbound_ports)
+  type                     = "ingress"
+  from_port                = var.rabbitmq_inbound_ports[count.index]
+  to_port                  = var.rabbitmq_inbound_ports[count.index]
+  protocol                 = "tcp"
+  source_security_group_id = module.bastion.sg_id # Source via bastion sg_id
+  security_group_id        = module.rabbitmq.sg_id # Destination
+}
+# redis Security Group Rules
+# =============================
+
+resource "aws_security_group_rule" "redis_from_vpn" {
+  count                    = length(var.redis_inbound_ports)
+  type                     = "ingress"
+  from_port                = var.redis_inbound_ports[count.index]
+  to_port                  = var.redis_inbound_ports[count.index]
+  protocol                 = "tcp"
+  source_security_group_id = module.vpn.sg_id # Source via VPN sg_id
+  security_group_id        = module.redis.sg_id # Destination
+}
+
+
+resource "aws_security_group_rule" "redis_from_bastion" {
+  count                    = length(var.redis_inbound_ports)
+  type                     = "ingress"
+  from_port                = var.redis_inbound_ports[count.index]
+  to_port                  = var.redis_inbound_ports[count.index]
+  protocol                 = "tcp"
+  source_security_group_id = module.bastion.sg_id # Source via bastion sg_id
+  security_group_id        = module.redis.sg_id # Destination
 }

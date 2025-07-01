@@ -59,6 +59,47 @@ variable "vpn_sg_desc" {
     description = "Description for the security group"
     default = "vpn security group"
 }
+
+# Security Group Configuration Variables mysql
+variable "mysql_sg_name" {
+    type        = string
+    description = "Name for the security group"
+    default = "mysql_sg"
+}
+
+variable "mysql_sg_desc" {
+    type        = string
+    description = "Description for the security group"
+    default = "mysql security group"
+}
+
+# Security Group Configuration Variables rabbitmq
+variable "rabbitmq_sg_name" {
+    type        = string
+    description = "Name for the security group"
+    default = "rabbitmq_sg"
+}
+
+variable "rabbitmq_sg_desc" {
+    type        = string
+    description = "Description for the security group"
+    default = "rabbitmq security group"
+}
+
+# Security Group Configuration Variables redis
+variable "redis_sg_name" {
+    type        = string
+    description = "Name for the security group"
+    default = "redis_sg"
+}
+
+variable "redis_sg_desc" {
+    type        = string
+    description = "Description for the security group"
+    default = "redis security group"
+}
+
+
 # Security Group Configuration Variables mongodb
 variable "mongodb_sg_name" {
     type        = string
@@ -78,4 +119,21 @@ variable "mongodb_inbound_ports"{
     type        = list(string)
     description = "List of ports to allow inbound access to MongoDB servers"
     default     = ["22", "27017"]
+}
+
+variable "mysql_inbound_ports"{
+    type        = list(string)
+    description = "List of ports to allow inbound access to mysql servers"
+    default     = ["22", "3306"]
+}
+
+variable "rabbitmq_inbound_ports"{
+    type        = list(string)
+    description = "List of ports to allow inbound access to rabbit servers"
+    default     = ["22", "5672"]
+}
+variable "redis_inbound_ports"{
+    type        = list(string)
+    description = "List of ports to allow inbound access to redis servers"
+    default     = ["22", "6379"]
 }
