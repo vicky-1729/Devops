@@ -59,6 +59,23 @@ variable "vpn_sg_desc" {
     description = "Description for the security group"
     default = "vpn security group"
 }
+# Security Group Configuration Variables mongodb
+variable "mongodb_sg_name" {
+    type        = string
+    description = "Name for the security group"
+    default = "mongodb_sg_name"
+}
 
+variable "mongodb_sg_desc" {
+    type        = string
+    description = "Description for the security group"
+    default = "mongodb security group"
+}
 
-
+# MongoDB inbound ports configuration
+# Default ports: 22 (SSH), 27017 (MongoDB default port)
+variable "mongodb_inbound_ports"{
+    type        = list(string)
+    description = "List of ports to allow inbound access to MongoDB servers"
+    default     = ["22", "27017"]
+}
