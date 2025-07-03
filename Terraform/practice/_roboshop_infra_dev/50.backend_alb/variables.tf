@@ -12,3 +12,11 @@ variable "environment" {
 }
 
 
+variable "zone_id"{
+    type        = string
+    default     = "xxxxxxxxx"
+}
+variable "zone_name"{
+    type        = string
+    default     = "xxxxxxxxx"
+}

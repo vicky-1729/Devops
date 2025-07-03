@@ -1,13 +1,70 @@
-# Security Groups Configuration
+# 🛡️ Security Groups Module - Access Control Layer
 
-This Terraform configuration creates security groups for the roboshop application infrastructure.
+## 📋 Overview
 
-## Overview
+This module creates and manages all security groups for the RoboShop infrastructure, implementing proper network segmentation and access controls following security best practices.
 
-Creates the following security groups:
-- **Frontend SG**: For frontend web servers
-- **Bastion SG**: For bastion/jump host
-- **Backend ALB SG**: For backend application load balancer
+## 🔒 Security Groups Created
+
+### **Application Tier Security Groups:**
+| Security Group | Purpose | Inbound Rules |
+|----------------|---------|---------------|
+| **frontend_sg** | Web servers | HTTP (80), HTTPS (443), SSH (22) |
+| **backend_alb_sg** | Load balancer | HTTP (80) from frontend |
+| **catalogue_sg** | Catalog service | Service ports from ALB |
+
+### **Infrastructure Security Groups:**
+| Security Group | Purpose | Inbound Rules |
+|----------------|---------|---------------|
+| **bastion_sg** | SSH jump server | SSH (22) from Internet |
+| **vpn_sg** | VPN access | VPN protocols (443, 943, 953, 1194, 22) |
+
+### **Database Security Groups:**
+| Security Group | Purpose | Inbound Rules |
+|----------------|---------|---------------|
+| **mongodb_sg** | MongoDB database | SSH (22) + MongoDB (27017) from Bastion/VPN |
+| **redis_sg** | Redis cache | SSH (22) + Redis (6379) from Bastion/VPN |
+| **mysql_sg** | MySQL database | SSH (22) + MySQL (3306) from Bastion/VPN |
+| **rabbitmq_sg** | Message queue | SSH (22) + RabbitMQ (5672) from Bastion/VPN |
+
+## 🔗 Access Control Matrix
+
+```
+Internet
+   ↓ (SSH, VPN protocols)
+[Bastion SG] + [VPN SG]
+   ↓ (HTTP, SSH, DB ports)
+[Frontend SG] → [Backend ALB SG] → [Catalogue SG]
+   ↓ (Database connections)
+[MongoDB SG] + [Redis SG] + [MySQL SG] + [RabbitMQ SG]
+```
+
+## 📊 Port Configuration
+
+### **Internet Accessible Ports:**
+- **Bastion**: 22 (SSH)
+- **VPN**: 22 (SSH), 443 (HTTPS), 943 (Admin), 953 (Client), 1194 (VPN)
+
+### **Database Ports (Internal Only):**
+- **MongoDB**: 27017
+- **Redis**: 6379  
+- **MySQL**: 3306
+- **RabbitMQ**: 5672
+
+### **All Services Allow:**
+- **SSH (22)**: From Bastion and VPN for management
+- **Outbound**: All traffic (0.0.0.0/0) for software updates
+
+## 🚀 Deployment
+
+```bash
+cd 10.security_groups/
+terraform init
+terraform plan    # Review security group rules
+terraform apply   # Create all security groups
+```
+
+This security layer provides enterprise-grade network security for the RoboShop e-commerce platform! 🚀
 
 ## Prerequisites
 

@@ -18,18 +18,18 @@ module "backend_alb" {
     local.common_tags,
     {
       Name = "${var.project}-${var.environment}-backend-alb"
-      #roboshop-dev-backendalb
     }
   )
 }
 
-# resource "aws_route53_record" "backend_alb" {
-#   zone_id = aws_route53_zone.primary.zone_id
-#   name    = "www.example.com"
-#   type    = "A"
-#   alias {
-#     name                   = 
-#     zone_id                = 
-#     evaluate_target_health = false
-#   }
-# }
+resource "aws_route53_record" "backend_alb" {
+  zone_id = var.zone_id
+  name    = "*.backend_alb.${var.zone_name}" # all.backend_alb.ts.cloudguru.in
+  type    = "A"
+
+  alias {
+    name                   = module.backend_alb.zone_name
+    zone_id                = module.backend_alb.zone_id
+    evaluate_target_health = true
+  }
+}
