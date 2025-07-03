@@ -112,6 +112,18 @@ variable "mongodb_sg_desc" {
     description = "Description for the security group"
     default = "mongodb security group"
 }
+# Security Group Configuration Variables mongodb
+variable "catalogue_sg_name" {
+    type        = string
+    description = "Name for the security group"
+    default = "catalogue_sg_name"
+}
+
+variable "catalogue_sg_desc" {
+    type        = string
+    description = "Description for the security group"
+    default = "catalogue security group"
+}
 
 # MongoDB inbound ports configuration
 # Default ports: 22 (SSH), 27017 (MongoDB default port)
@@ -136,4 +148,9 @@ variable "redis_inbound_ports"{
     type        = list(string)
     description = "List of ports to allow inbound access to redis servers"
     default     = ["22", "6379"]
+}
+variable "catalogue_inbound_ports"{
+    type        = list(string)
+    description = "List of ports to allow inbound access to redis servers"
+    default     = ["22", "8080"]
 }

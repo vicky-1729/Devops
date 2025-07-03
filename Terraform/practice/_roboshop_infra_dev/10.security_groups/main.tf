@@ -90,6 +90,19 @@ module "rabbitmq"{
   sg_name     = var.rabbitmq_sg_name
   sg_desc     = var.rabbitmq_sg_desc
 }
+#catalogue
+
+module "catalogue" {
+  source = "../modules/sg"
+
+  vpc_id = local.vpc_id
+  project = var.project
+  environment = var.environment
+  sg_name = var.catalogue_sg_name
+  sg_desc = var.catalogue_sg_desc
+}
+
+
 
 # Security Group Rules Section
 # ===========================
@@ -222,7 +235,15 @@ resource "aws_security_group_rule" "mongodb_from_bastion" {
   source_security_group_id = module.bastion.sg_id # Source via bastion sg_id
   security_group_id        = module.mongodb.sg_id # Destination
 }
-
+resource "aws_security_group_rule" "mongodb_from_catalogue" {
+  count                    = length(var.mongodb_inbound_ports)
+  type                     = "ingress"
+  from_port                = var.mongodb_inbound_ports[count.index]
+  to_port                  = var.mongodb_inbound_ports[count.index]
+  protocol                 = "tcp"
+  source_security_group_id = module.catalogue.sg_id # Source via bastion sg_id
+  security_group_id        = module.mongodb.sg_id # Destination
+}
 # mysql Security Group Rules
 # =============================
 
@@ -292,4 +313,24 @@ resource "aws_security_group_rule" "redis_from_bastion" {
   protocol                 = "tcp"
   source_security_group_id = module.bastion.sg_id # Source via bastion sg_id
   security_group_id        = module.redis.sg_id # Destination
+}
+
+#catalogue ports
+resource "aws_security_group_rule" "catalogue_from_bastion" {
+  count                    = length(var.catalogue_inbound_ports)
+  type                     = "ingress"
+  from_port                = var.catalogue_inbound_ports[count.index]
+  to_port                  = var.catalogue_inbound_ports[count.index]
+  protocol                 = "tcp"
+  source_security_group_id = module.bastion.sg_id # Source via bastion sg_id
+  security_group_id        = module.catalogue.sg_id # Destination
+}
+resource "aws_security_group_rule" "catalogue_from_vpn" {
+  count                    = length(var.catalogue_inbound_ports)
+  type                     = "ingress"
+  from_port                = var.catalogue_inbound_ports[count.index]
+  to_port                  = var.catalogue_inbound_ports[count.index]
+  protocol                 = "tcp"
+  source_security_group_id = module.vpn.sg_id # Source via bastion sg_id
+  security_group_id        = module.catalogue.sg_id # Destination
 }
