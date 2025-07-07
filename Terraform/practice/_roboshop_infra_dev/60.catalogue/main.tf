@@ -21,3 +21,30 @@ resource "aws_route53_record" "catalogue" {
     allow_overwrite = true
 }
 
+resource "terraform_data" "catalogue" {
+    triggers_replace = [
+        aws_instance.catalogue.id
+    ]
+    
+    # Upload bootstrap script to the instance
+    provisioner "file" {
+        source      = "bootstrap.sh"
+        destination = "/tmp/bootstrap.sh"
+    }
+
+    # SSH connection configuration
+    connection {
+        type     = "ssh"
+        user     = "ec2-user"
+        password = "DevOps321"
+        host     = aws_instance.catalogue.private_ip
+    }
+
+    # Execute catalogue configuration
+    provisioner "remote-exec" {
+        inline = [
+            "chmod +x /tmp/bootstrap.sh",
+            "sudo sh /tmp/bootstrap.sh catalogue ${var.environment}"
+        ]
+    }
+}
