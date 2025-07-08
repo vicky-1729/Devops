@@ -1,18 +1,18 @@
-    resource "aws_lb_target_group" "catalogue" {
-      name     = "${var.project}-{var.environment}-catalogue"
-      port     = 80
-      protocol = "HTTP"
-      vpc_id   = local.vpc_id
-      health_check {
-        path                = "/health"
-        protocol            = "HTTP"
-        matcher             = "200-299"
-        interval            = 15
-        timeout             = 5
-        healthy_threshold   = 2
-        unhealthy_threshold = 3
-      }
-    }
+resource "aws_lb_target_group" "catalogue" {
+  name     = "${var.project}-{var.environment}-catalogue"
+  port     = 80
+  protocol = "HTTP"
+  vpc_id   = local.vpc_id
+  health_check {
+    path                = "/health"
+    protocol            = "HTTP"
+    matcher             = "200-299"
+    interval            = 15
+    timeout             = 5
+    healthy_threshold   = 2
+    unhealthy_threshold = 3
+  }
+}
 resource "aws_instance" "catalogue" {
   ami           = local.ami_id
   instance_type = "t3.micro"
