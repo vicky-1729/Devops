@@ -1,8 +1,9 @@
 resource "aws_lb_target_group" "catalogue" {
-  name     = "${var.project}-{var.environment}-catalogue"
+  name     = "${var.project}-${var.environment}-catalogue"
   port     = 80
   protocol = "HTTP"
   vpc_id   = local.vpc_id
+  deregistration_delay = 120
   health_check {
     path                = "/health"
     protocol            = "HTTP"
@@ -63,23 +64,23 @@ resource "terraform_data" "catalogue" {
     }
 }
 #stoping instance
-resource "aws_instance_state" "catalogue_stop" {
+resource "aws_instance_state" "catalogue" {
   instance_id = aws_instance.catalogue.id
   state       = "stopped"
-  depends_on = [aws_instance.catalogue]
+  depends_on = [terraform_data.catalogue]
 }
 
 #ami taking from stoped instance
 resource "aws_ami_from_instance" "catalogue" {
   name               = "${var.environment}.${var.zone_name}-catalogue"
   source_instance_id = aws_instance.catalogue.id
-  depends_on = [aws_instance_state.catalogue_stop]
+  depends_on = [aws_instance_state.catalogue]
 }
 
 # delete the catalogue instance
 resource "terraform_data" "catalogue_delete" {
     triggers_replace = [
-       aws_ami_from_instance.catalogue.id
+       aws_instance.catalogue.id
     ]
 
     # Execute catalogue configuration
@@ -88,4 +89,57 @@ resource "terraform_data" "catalogue_delete" {
             "terraform destroy -target aws_instance.catalogue",
         ]
     }
+}
+
+
+resource "aws_launch_template" "catalogue" {
+  name = "${var.project}-${var.environment}-catalogue"
+  image_id = aws_ami_from_instance.catalogue.id
+  instance_initiated_shutdown_behavior = "terminate"
+  instance_type = "t2.micro"
+  vpc_security_group_ids = [local.catalogue_sg_id]
+  update_default_version = true
+  #this tags for instances
+  tag_specifications {
+    resource_type = "instance"
+
+    tags = merge(
+      local.common_tags,
+      {
+      Name = "${var.project}-${var.environment}-catalogue"
+    })
+  }
+   #this tags for volumes
+    tag_specifications {
+    resource_type = "volume"
+
+    tags = merge(
+      local.common_tags,
+      {
+      Name = "${var.project}-${var.environment}-catalogue"
+    })
+  }
+  #launch template
+  tags = merge(
+      local.common_tags,
+      {
+        Name = "${var.project}-${var.environment}-catalogue"
+      }
+  )
+
+}
+
+
+resource "aws_autoscaling_group" "catalogue" {
+  name                      = "foobar3-terraform-test"
+  max_size                  = 3
+  min_size                  = 1
+  health_check_grace_period = 120
+  health_check_type         = "ALB"
+  desired_capacity          = 1
+
+ launch_template {
+  id = aws_launch_template.catalogue.id
+  version = aws_launch_template.catalogue.version
+ }
 }
